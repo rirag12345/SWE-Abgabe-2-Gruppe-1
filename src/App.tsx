@@ -1,8 +1,11 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 
-function App() { 
-  // Initialer Wert für den State, der mit useState verwaltet wird
+export function App() { 
+  /*
+  Initialer Wert für den State, der mit useState verwaltet wird
+  => Array Destructuring
+  */
   const [data, setData] = useState([]) 
 
   useEffect(() => { 
@@ -21,5 +24,3 @@ function App() {
     </div>
   )
 }
-
-export default App
