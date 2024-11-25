@@ -21,7 +21,7 @@
     "module": "ESNext",
     // Wie werden zu importierende Module im Dateisystem gefunden?
     // "moduleResolution": "nodenext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "moduleDetection": "force", // default: "auto"
     "declaration": true,
     "removeComments": true,
