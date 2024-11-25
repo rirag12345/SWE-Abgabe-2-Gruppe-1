@@ -1,7 +1,59 @@
 {
   "files": [],
   "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
-  ]
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.node.json"
+    }
+  ],
+  "extends": [
+    "@tsconfig/node22/tsconfig"
+  ],
+  "ts-node": {
+    "esm": true,
+    "module": "ES2023"
+  },
+  "compilerOptions": {
+    // uebersetzter JS-Code im Hinblick auf Module. "NodeNext" erfordert dasselbe fuer "moduleResolution"
+    // "module": "NodeNext", // entspricht "Node16"
+    "module": "ESNext",
+    // Wie werden zu importierende Module im Dateisystem gefunden?
+    // "moduleResolution": "nodenext",
+    "moduleResolution": "node",
+    "moduleDetection": "force", // default: "auto"
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    // https://www.typescriptlang.org/tsconfig/#target
+    // "target": "es2023",
+    "target": "ES2023",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "incremental": true,
+    "allowUnreachableCode": false, // return bei then-else und try-catch
+    "allowUnusedLabels": false, // Labels muessen auch benutzt werden
+    "esModuleInterop": true, // Kompatibilitaet zwischen CommonJS und ES Modulen
+    // "exactOptionalPropertyTypes": true, // bei optionalen Properties ggf. explizit undefined spezifizieren
+    "forceConsistentCasingInFileNames": true, // Gross-/Kleinschreibung bei Dateinamen
+    "noErrorTruncation": true,
+    "noFallthroughCasesInSwitch": true, // "break" muss bei switch vorhanden sein
+    "noImplicitAny": true, // Fehler bei implizitem Typ "any"
+    "noImplicitOverride": true, // Schluesselwort "override"
+    "noImplicitReturns": true, // bei jedem Code-Pfad muss es "return" geben
+    "noImplicitThis": true, // Fehler bei this mit implizitem "any"
+    "noUncheckedIndexedAccess": true, // undefined bei Resultaten fuer Index-Signaturen
+    "noUnusedLocals": true, // keine nicht-benutzten lokalen Variablen
+    "noUnusedParameters": true, // keine nicht-benutzen Parameter
+    "preserveWatchOutput": true,
+    "strict": true // alle "strict"-Optionen aktivieren
+    // "noImplicitAny": true, // Fehler bei implizitem Typ "any", default bei strict
+    // "noImplicitThis": true, // Fehler bei this mit implizitem "any", default bei strict
+    // "useUnknownInCatchVariables": true // unknown als default-Typ bei catch-Klauseln, default bei strict
+    // "noPropertyAccessFromIndexSignature": true, // Fehler in __tests__ bei dot-Zugriff auf nicht-definierte Properties, z.B. response.data.statusCode
+    // "allowJs": true, // wegen ts-jest und ESM
+  }
 }
