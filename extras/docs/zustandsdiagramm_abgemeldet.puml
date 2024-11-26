@@ -1,14 +1,11 @@
-@startuml zustandsdiagramm_angemeldet
+@startuml zustandsdiagramm_abgemeldet
 
 hide empty description
 
-title UML-Zustandsdiagramm für den "Page Flow" bei einem angemeldeten Benutzer
+title UML-Zustandsdiagramm für den "Page Flow" bei einem abgemeldeten Benutzer
 caption (c) Botan Coban, Felix Jäger, Philip Neuffer
 
 state "index.html" as index {
-index : jwt
-index : roles
-index : expiration
 
 state Suche{
 
@@ -27,24 +24,12 @@ state Suche{
     Waiting --> Suchergebnis : Suchergebnis eingetroffen
 }
 
-state Neuanlegen {
-    state c2 <<choice>>
-
-    [*] --> Eingabeformular : Daten eingeben
-
-    Eingabeformular --> c2: Button "OK"
-    c2 -up-> Eingabeformular: Fehlerhafte Daten
-
-    c2 --> [*]: Korrekte Daten
-}
-
 [*] --> Suche: Button "Suche"
-[*] --> Neuanlegen: Button "Neuanlegen"
+[*] -right-> Fehler: Button "Neuanlegen"
+[*] -left-> Home: Button "Login"
 
-[*] -left-> Home: Button "Logout"
-
-note "Startseite nach Anmeldung" as note
-[*] -right-> note
+note "Startseite nach übersprungener Anmeldung" as note
+[*] -up-> note
 }
 
 @enduml
