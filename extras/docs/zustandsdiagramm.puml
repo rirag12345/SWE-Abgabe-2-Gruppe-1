@@ -1,0 +1,7 @@
+@startuml SWE-Gruppe-1-Abgabe-2
+
+hide empty description
+
+[*] --> Suche
+
+@enduml
