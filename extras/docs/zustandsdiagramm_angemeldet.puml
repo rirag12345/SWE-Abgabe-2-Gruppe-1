@@ -1,13 +1,16 @@
-@startuml SWE-Gruppe-1-Abgabe-2
+@startuml zustandsdiagramm_angemeldet
 
 hide empty description
+
+title UML-Zustandsdiagramm für den "Page Flow" bei einem angemeldeten Benutzer
+caption (c) Botan Coban, Felix Jäger, Philip Neuffer
 
 state "index.html" as index {
 index : jwt
 index : roles
 index : expiration
 
-state Suchen{
+state Suche{
 
     [*] --> Suchformular : Suchkriterien eingeben
 
@@ -17,7 +20,7 @@ state Suchen{
         state c <<choice>>
         [*] --> c : Prüfung
         c --> Fehlermeldung: Kein Buch gefunden
-        c --> GefundeneBuecher: min. 1 Buch gefunden
+        c --> GefundeneBuecher: Mind. 1 Buch gefunden
         GefundeneBuecher --> DetailsBuch : Buch ausgewählt
     }
 
@@ -28,21 +31,20 @@ state Neuanlegen {
     state c2 <<choice>>
 
     [*] --> Eingabeformular : Daten eingeben
-    Eingabeformular --> c2: Button "OK"
 
+    Eingabeformular --> c2: Button "OK"
     c2 -up-> Eingabeformular: Fehlerhafte Daten
+
     c2 --> [*]: Korrekte Daten
 }
 
-[*] --> Suchen: Button "Suche"
+[*] --> Suche: Button "Suche"
 [*] --> Neuanlegen: Button "Neuanlegen"
 
 [*] --> Home: Button "Logout"
+
 Neuanlegen --> Home
 
 }
-
-title UML-Zustandsdiagramm "Page Flow" für angemeldeten Benutzer
-footer (c) Botan Coban, Felix Jaeger, Philip Neuffer
 
 @enduml
