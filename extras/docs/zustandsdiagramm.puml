@@ -2,6 +2,35 @@
 
 hide empty description
 
-[*] --> Suche
+state SucheBuecher{
+    state c <<choice>>
+
+    [*] --> Suchformular
+
+    Suchformular --> waiting: Button "Suchen"
+
+    waiting --> c: Suchergebnis eingetroffen
+
+    state Suchergebnis{
+        c --> ErrorMessage: Kein Buch gefunden
+        c --> GefundeneBuecher: min. 1 Buch gefunden
+    }
+}
+
+GefundeneBuecher --> DetailsBuch: Link anklicken
+
+[*] --> SucheBuecher: Menüpunkt "Suche"
+
+[*] --> CreateBuch: Menüpunkt "neues Buch anlegen"
+
+state c2 <<choice>>
+
+CreateBuch --> c2: Button "OK"
+
+c2 --> CreateBuch: Fehlerhafte Daten
+
+c2 --> Home: Korrekte Daten
+
+
 
 @enduml
