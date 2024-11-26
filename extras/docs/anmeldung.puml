@@ -1,0 +1,24 @@
+@startuml anmeldung
+
+hide empty description
+
+title UML-Zustandsdiagramm für den "Page Flow" bei der Anmeldung
+caption (c) Botan Coban, Felix Jäger, Philip Neuffer
+
+state "index.html" as index {
+index : jwt
+index : roles
+index : expiration
+
+[*] --> Eingabeformular : Anmeldedaten eingeben
+note "Home" as note
+[*] -right-> note
+
+state c <<choice>>
+Eingabeformular --> c : Button "OK"
+c -up-> Eingabeformular: Ungültige Anmeldedaten
+
+c --> [*]: Gültige Anmeldedaten
+}
+
+@enduml
