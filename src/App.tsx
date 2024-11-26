@@ -1,6 +1,5 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
-import "./App.css";
+import axios from 'axios'
+import { useEffect, useState } from 'react'
 
 function App() {
   const [data] = useState([])
@@ -15,12 +14,10 @@ function App() {
 
   return (
     <div>
-      <div>
-        {/* Die Daten werden als JSON-String im div-Element angezeigt */}
-        {JSON.stringify(data)}
-      </div>
-      {/*display Vite logo*/}
-      <img src="/vite.svg" alt="Vite logo" className="Vite-logo-class" />
+      {/* Die Daten werden als JSON-String im div-Element angezeigt */}
+      {JSON.stringify(data)}
     </div>
-  );
+  )
 }
+
+export default App
