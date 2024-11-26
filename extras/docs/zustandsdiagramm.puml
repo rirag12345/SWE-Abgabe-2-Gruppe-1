@@ -2,35 +2,47 @@
 
 hide empty description
 
-state SucheBuecher{
-    state c <<choice>>
+state "index.html" as index {
+index : jwt
+index : roles
+index : expiration
 
-    [*] --> Suchformular
+state Suchen{
 
-    Suchformular --> waiting: Button "Suchen"
+    [*] --> Suchformular : Suchkriterien eingeben
 
-    waiting --> c: Suchergebnis eingetroffen
+    Suchformular --> Waiting: Button "Suchen"
 
     state Suchergebnis{
-        c --> ErrorMessage: Kein Buch gefunden
+        state c <<choice>>
+        [*] --> c : Prüfung
+        c --> Fehlermeldung: Kein Buch gefunden
         c --> GefundeneBuecher: min. 1 Buch gefunden
+        GefundeneBuecher --> DetailsBuch : Buch ausgewählt
     }
+
+    Waiting --> Suchergebnis : Suchergebnis eingetroffen
 }
 
-GefundeneBuecher --> DetailsBuch: Link anklicken
+state Neuanlegen {
+    state c2 <<choice>>
 
-[*] --> SucheBuecher: Menüpunkt "Suche"
+    [*] --> Eingabeformular : Daten eingeben
+    Eingabeformular --> c2: Button "OK"
 
-[*] --> CreateBuch: Menüpunkt "neues Buch anlegen"
+    c2 -up-> Eingabeformular: Fehlerhafte Daten
+    c2 --> [*]: Korrekte Daten
+}
 
-state c2 <<choice>>
+[*] --> Suchen: Button "Suche"
+[*] --> Neuanlegen: Button "Neuanlegen"
 
-CreateBuch --> c2: Button "OK"
+[*] --> Home: Button "Logout"
+Neuanlegen --> Home
 
-c2 --> CreateBuch: Fehlerhafte Daten
+}
 
-c2 --> Home: Korrekte Daten
-
-
+title UML-Zustandsdiagramm "Page Flow" für angemeldeten Benutzer
+footer (c) Botan Coban, Felix Jaeger, Philip Neuffer
 
 @enduml
