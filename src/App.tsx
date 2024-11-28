@@ -1,18 +1,17 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
-import { Container, Typography, AppBar, Toolbar, Button } from '@mui/material';
+import { BrowserRouter as Router, Route, Routes,} from 'react-router-dom';
+import { Container} from '@mui/material';
 import SignIn from './components/SignIn';
 import Navbar from './components/Navbar';
 
 function App() {
-  const [data, setData] = useState([]);
+  const [data] = useState([]);
 
   useEffect(() => {
     const fetchBook = async () => {
       const results = await axios.get("https://localhost:3000/rest");
       console.log(results);
-      setData(results.data);
     };
 
     void fetchBook();
