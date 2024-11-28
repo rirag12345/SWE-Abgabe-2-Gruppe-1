@@ -10,9 +10,11 @@ index : jwt
 index : roles
 index : expiration
 
-[*] --> Eingabeformular : Anmeldedaten eingeben
+[*] --> Eingabeformular
 note "Home" as note
 [*] -right-> note
+note "Anmeldedaten eingeben" as note2
+Eingabeformular -right-> note2
 
 state c <<choice>>
 Eingabeformular --> c : Button "OK"

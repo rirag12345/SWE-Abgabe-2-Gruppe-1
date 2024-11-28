@@ -12,7 +12,9 @@ index : expiration
 
 state Suche{
 
-    [*] --> Suchformular : Suchkriterien eingeben
+    [*] --> Suchformular
+    note "Suchkriterien eingeben" as note
+    Suchformular -right-> note
 
     Suchformular --> Waiting: Button "Suchen"
 
@@ -30,7 +32,9 @@ state Suche{
 state Neuanlegen {
     state c2 <<choice>>
 
-    [*] --> Eingabeformular : Daten eingeben
+    [*] --> Eingabeformular
+    note "Daten eingeben" as note2
+    Eingabeformular -right-> note2
 
     Eingabeformular --> c2: Button "OK"
     c2 -up-> Eingabeformular: Fehlerhafte Daten
