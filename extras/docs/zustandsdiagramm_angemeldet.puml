@@ -13,8 +13,9 @@ index : expiration
 state Suche{
 
     [*] --> Suchformular
-    note "Suchkriterien eingeben" as note
-    Suchformular -right-> note
+    Suchformular --> Suchformular : Suchkriterien eingeben
+    note "Clientseitige Validierung" as note
+    Suchformular --> note
 
     Suchformular --> Waiting: Button "Suchen"
 
@@ -33,8 +34,9 @@ state Neuanlegen {
     state c2 <<choice>>
 
     [*] --> Eingabeformular
-    note "Daten eingeben" as note2
-    Eingabeformular -right-> note2
+    Eingabeformular --> Eingabeformular : Buchdaten eingeben
+    note "Clientseitige Validierung" as note3
+    Eingabeformular --> note3
 
     Eingabeformular --> c2: Button "OK"
     c2 -up-> Eingabeformular: Fehlerhafte Daten
@@ -47,8 +49,8 @@ state Neuanlegen {
 
 [*] -left-> Home: Button "Logout"
 
-note "Startseite nach Anmeldung" as note
-[*] -right-> note
+note "Startseite nach Anmeldung" as note2
+[*] -right-> note2
 }
 
 @enduml
