@@ -9,7 +9,9 @@ state "index.html" as index {
 
 state Suche{
 
-    [*] --> Suchformular : Suchkriterien eingeben
+    [*] --> Suchformular
+    note "Suchkriterien eingeben" as note
+    Suchformular -right-> note
 
     Suchformular --> Waiting: Button "Suchen"
 
