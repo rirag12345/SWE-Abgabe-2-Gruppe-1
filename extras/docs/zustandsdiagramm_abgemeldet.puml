@@ -10,8 +10,9 @@ state "index.html" as index {
 state Suche{
 
     [*] --> Suchformular
-    note "Suchkriterien eingeben" as note
-    Suchformular -right-> note
+    Suchformular --> Suchformular : Suchkriterien eingeben
+    note "Clientseitige Validierung" as note
+    Suchformular --> note
 
     Suchformular --> Waiting: Button "Suchen"
 
@@ -30,8 +31,8 @@ state Suche{
 [*] -right-> Fehler: Button "Neuanlegen"
 [*] -left-> Home: Button "Login"
 
-note "Startseite nach übersprungener Anmeldung" as note
-[*] -up-> note
+note "Startseite nach übersprungener Anmeldung" as note2
+[*] -up-> note2
 }
 
 @enduml
