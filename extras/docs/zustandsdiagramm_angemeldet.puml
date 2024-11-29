@@ -1,5 +1,5 @@
 @startuml zustandsdiagramm_angemeldet
-
+skinparam Dpi 400
 hide empty description
 
 title UML-Zustandsdiagramm für den "Page Flow" bei einem angemeldeten Benutzer

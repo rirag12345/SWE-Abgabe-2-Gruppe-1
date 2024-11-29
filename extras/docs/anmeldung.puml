@@ -1,4 +1,5 @@
 @startuml anmeldung
+skinparam Dpi 400
 
 hide empty description
 
