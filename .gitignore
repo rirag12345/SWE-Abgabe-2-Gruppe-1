@@ -11,6 +11,8 @@ node_modules
 dist
 dist-ssr
 *.local
+extras/compose/keycloak/compose.override.yml
+
 
 # Editor directories and files
 .vscode/*
