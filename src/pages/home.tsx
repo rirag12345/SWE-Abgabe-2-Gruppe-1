@@ -7,7 +7,7 @@ const Home = () => {
         Home Page
       </Typography>
       <Typography>
-        Willkommen auf der Startseite!
+        Sie sind auf der Startseite!
       </Typography>
     </Container>
   );
