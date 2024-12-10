@@ -24,8 +24,9 @@ const SearchResults = () => {
 
   const fetchBooks = async () => {
     try {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const response = await axios.get('https://localhost:3000/rest');
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-argument
       setBooks(response.data._embedded.buecher);
     } catch (error) {
       console.error('Error fetching books:', error);
@@ -40,7 +41,7 @@ const SearchResults = () => {
       {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
       <SearchBookButton onSearch={fetchBooks} />
       {books.length > 0 && (
-        <TableContainer component={Paper} style={{ marginTop: '20px' }}>
+        <TableContainer component={Paper} style={{ marginTop: '10px' }}>
           <Table>
             <TableHead>
               <TableRow>
