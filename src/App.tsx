@@ -1,9 +1,10 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Route, Routes,} from 'react-router-dom';
-import { Container} from '@mui/material';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { Container } from '@mui/material';
 import SignIn from './components/SignIn';
 import Navbar from './components/Navbar';
+import SearchResults from './pages/searchResults';
 
 function App() {
   const [data] = useState([]);
@@ -27,7 +28,8 @@ function App() {
         <Container style={{ padding: '20px' }}>
           <Routes>
             <Route path="/signin" element={<SignIn />} />
-            <Route path="/" element={<div>Home Page</div>} />
+            <Route path="/" element={<div>Sie sind auf der Startseite!</div>} />
+            <Route path="/search-results" element={<SearchResults />} />
             {/* Weitere Routen hier */}
           </Routes>
 
