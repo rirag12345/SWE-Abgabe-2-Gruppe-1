@@ -21,6 +21,7 @@ const SearchResults = () => {
   }
 
   const [books, setBooks] = useState<Book[]>([]);
+  const [showResults, setShowResults] = useState(false);
 
   const fetchBooks = async () => {
     try {
@@ -28,6 +29,7 @@ const SearchResults = () => {
       const response = await axios.get('https://localhost:3000/rest');
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-argument
       setBooks(response.data._embedded.buecher);
+      setShowResults(true);
     } catch (error) {
       console.error('Error fetching books:', error);
     }
@@ -35,48 +37,50 @@ const SearchResults = () => {
 
   return (
     <Container>
-      <Typography variant="h4" gutterBottom>
-        Suchergebnisse
-      </Typography>
       {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
       <SearchBookButton onSearch={fetchBooks} />
-      {books.length > 0 && (
-        <TableContainer component={Paper} style={{ marginTop: '80px' }}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>ISBN</TableCell>
-                <TableCell>Rating</TableCell>
-                <TableCell>Art</TableCell>
-                <TableCell>Preis</TableCell>
-                <TableCell>Rabatt</TableCell>
-                <TableCell>Lieferbar</TableCell>
-                <TableCell>Datum</TableCell>
-                <TableCell>Homepage</TableCell>
-                <TableCell>Schlagwörter</TableCell>
-                <TableCell>Titel</TableCell>
-                <TableCell>Untertitel</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {books.map((book) => (
-                <TableRow key={book.isbn}>
-                  <TableCell>{book.isbn}</TableCell>
-                  <TableCell>{book.rating}</TableCell>
-                  <TableCell>{book.art}</TableCell>
-                  <TableCell>{book.preis}</TableCell>
-                  <TableCell>{book.rabatt}</TableCell>
-                  <TableCell>{book.lieferbar ? 'Ja' : 'Nein'}</TableCell>
-                  <TableCell>{book.datum}</TableCell>
-                  <TableCell><a href={book.homepage} target="_blank" rel="noopener noreferrer">{book.homepage}</a></TableCell>
-                  <TableCell>{book.schlagwoerter ? book.schlagwoerter.join(', ') : ''}</TableCell>
-                  <TableCell>{book.titel.titel}</TableCell>
-                  <TableCell>{book.titel.untertitel}</TableCell>
+      {showResults && (
+        <>
+          <Typography variant="h4" gutterBottom style={{ marginTop: '20px' }}>
+            Suchergebnisse
+          </Typography>
+          <TableContainer component={Paper} style={{ marginTop: '10px' }}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>ISBN</TableCell>
+                  <TableCell>Rating</TableCell>
+                  <TableCell>Art</TableCell>
+                  <TableCell>Preis</TableCell>
+                  <TableCell>Rabatt</TableCell>
+                  <TableCell>Lieferbar</TableCell>
+                  <TableCell>Datum</TableCell>
+                  <TableCell>Homepage</TableCell>
+                  <TableCell>Schlagwörter</TableCell>
+                  <TableCell>Titel</TableCell>
+                  <TableCell>Untertitel</TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+              </TableHead>
+              <TableBody>
+                {books.map((book) => (
+                  <TableRow key={book.isbn}>
+                    <TableCell>{book.isbn}</TableCell>
+                    <TableCell>{book.rating}</TableCell>
+                    <TableCell>{book.art}</TableCell>
+                    <TableCell>{book.preis}</TableCell>
+                    <TableCell>{book.rabatt}</TableCell>
+                    <TableCell>{book.lieferbar ? 'Ja' : 'Nein'}</TableCell>
+                    <TableCell>{book.datum}</TableCell>
+                    <TableCell><a href={book.homepage} target="_blank" rel="noopener noreferrer">{book.homepage}</a></TableCell>
+                    <TableCell>{book.schlagwoerter ? book.schlagwoerter.join(', ') : ''}</TableCell>
+                    <TableCell>{book.titel.titel}</TableCell>
+                    <TableCell>{book.titel.untertitel}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </>
       )}
     </Container>
   );
