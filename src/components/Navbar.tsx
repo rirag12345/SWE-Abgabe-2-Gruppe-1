@@ -1,5 +1,6 @@
-import { AppBar, Toolbar, Typography, Button } from '@mui/material';
+import { AppBar, Toolbar, Button } from '@mui/material';
 import { Link } from 'react-router-dom';
+import LocalLibraryIcon from '@mui/icons-material/LocalLibrary';
 
 const Navbar = () => {
   return (
@@ -8,10 +9,8 @@ const Navbar = () => {
       style={{ backgroundColor: '#f5f5f5', color: '#000', boxShadow: 'none' }}
     >
       <Toolbar>
-        {/* Titel */}
-        <Typography variant="h6" style={{ flexGrow: 1 }}>
-          Buch Projekt
-        </Typography>
+        {/* Icon */}
+        <LocalLibraryIcon />
 
         {/* MUI Buttons */}
         <Button color="inherit" component={Link} to="/signin">Sign In</Button>
