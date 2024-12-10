@@ -41,7 +41,7 @@ const SearchResults = () => {
       {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
       <SearchBookButton onSearch={fetchBooks} />
       {books.length > 0 && (
-        <TableContainer component={Paper} style={{ marginTop: '0px' }}>
+        <TableContainer component={Paper} style={{ marginTop: '80px' }}>
           <Table>
             <TableHead>
               <TableRow>
