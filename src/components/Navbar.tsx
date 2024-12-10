@@ -16,7 +16,7 @@ const Navbar = () => {
         {/* MUI Buttons */}
         <Button color="inherit" component={Link} to="/signin">Sign In</Button>
         <Button color="inherit" component={Link} to="/">Home</Button>
-        <Button color="inherit" component={Link} to="/about">Search</Button>
+        <Button color="inherit" component={Link} to="/search-results">Search</Button>
       </Toolbar>
     </AppBar>
   );
