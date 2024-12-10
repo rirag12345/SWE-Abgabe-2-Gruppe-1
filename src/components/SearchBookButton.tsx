@@ -11,8 +11,8 @@ const SearchBookButton: React.FC<SearchBookButtonProps> = ({ onSearch }) => {
   };
 
   return (
-    <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
-      <Paper elevation={3} style={{ padding: '40px', textAlign: 'center', width: '300px' }}>
+    <Box display="flex" justifyContent="center" alignItems="center" style={{ marginTop: '20px' }}>
+      <Paper elevation={3} style={{ padding: '20px', textAlign: 'center', width: '300px' }}>
         <Button variant="outlined" onClick={handleSearch} fullWidth>Search</Button>
       </Paper>
     </Box>
