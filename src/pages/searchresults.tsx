@@ -26,6 +26,7 @@ const SearchResults = () => {
   interface SearchCriteria {
     isbn?: string;
     title?: string;
+    rating?: string;
   }
 
   const fetchBooks = async (criteria: SearchCriteria) => {
@@ -38,6 +39,9 @@ const SearchResults = () => {
       }
       if (criteria.title) {
         filteredBooks = filteredBooks.filter((book: Book) => criteria.title && book.titel.titel.includes(criteria.title));
+      }
+      if (criteria.rating) {
+        filteredBooks = filteredBooks.filter((book: Book) => criteria.rating && book.rating === parseInt(criteria.rating, 10));
       }
 
       setBooks(filteredBooks);
