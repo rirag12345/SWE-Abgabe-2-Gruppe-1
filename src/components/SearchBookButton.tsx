@@ -3,15 +3,17 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 
 interface SearchBookButtonProps {
-  onSearch: (criteria: { isbn: string }) => void;
+  onSearch: (criteria: { isbn: string; title: string }) => void;
 }
 
 const SearchBookButton: React.FC<SearchBookButtonProps> = ({ onSearch }) => {
   const [isbn, setIsbn] = useState('');
+  const [title, setTitle] = useState('');
 
   const handleSearch = () => {
     const criteria = {
       isbn,
+      title,
     };
     onSearch(criteria);
   };
@@ -25,6 +27,14 @@ const SearchBookButton: React.FC<SearchBookButtonProps> = ({ onSearch }) => {
           fullWidth
           value={isbn}
           onChange={(e) => { setIsbn(e.target.value); }}
+          style={{ marginBottom: '10px' }}
+        />
+        <TextField
+          label="Titel"
+          variant="outlined"
+          fullWidth
+          value={title}
+          onChange={(e) => { setTitle(e.target.value); }}
           style={{ marginBottom: '10px' }}
         />
         <Button variant="outlined" onClick={handleSearch} fullWidth style={{ marginTop: '20px' }}>Search</Button>
