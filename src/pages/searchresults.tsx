@@ -77,7 +77,7 @@ const SearchResults = () => {
   return (
     <Container>
       {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
-      <SearchBookButton onSearch={fetchBooks} />
+      <SearchBookButton onSearch={fetchBooks} onReset={() => { setBooks([]); }} />
       {showResults && (
         <>
           <Typography variant="h4" gutterBottom style={{ marginTop: '20px' }}>
@@ -137,3 +137,4 @@ const SearchResults = () => {
 };
 
 export default SearchResults;
+
