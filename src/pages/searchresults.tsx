@@ -1,6 +1,17 @@
 import { useState } from 'react';
 import axios from 'axios';
-import { Container, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import {
+  Container,
+  Typography,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+} from '@mui/material';
+import Rating from '@mui/material/Rating';
 import SearchBookButton from '../components/SearchBookButton';
 
 const SearchResults = () => {
@@ -93,13 +104,24 @@ const SearchResults = () => {
                 {books.map((book) => (
                   <TableRow key={book.isbn}>
                     <TableCell>{book.isbn}</TableCell>
-                    <TableCell>{book.rating}</TableCell>
+                    <TableCell>
+                      <Rating
+                        name={`rating-${book.isbn}`}
+                        value={book.rating}
+                        precision={0.5}
+                        readOnly
+                      />
+                    </TableCell>
                     <TableCell>{book.art}</TableCell>
                     <TableCell>{book.preis}</TableCell>
                     <TableCell>{book.rabatt}</TableCell>
                     <TableCell>{book.lieferbar ? 'Ja' : 'Nein'}</TableCell>
                     <TableCell>{book.datum}</TableCell>
-                    <TableCell><a href={book.homepage} target="_blank" rel="noopener noreferrer">{book.homepage}</a></TableCell>
+                    <TableCell>
+                      <a href={book.homepage} target="_blank" rel="noopener noreferrer">
+                        {book.homepage}
+                      </a>
+                    </TableCell>
                     <TableCell>{book.schlagwoerter ? book.schlagwoerter.join(', ') : ''}</TableCell>
                     <TableCell>{book.titel.titel}</TableCell>
                     <TableCell>{book.titel.untertitel}</TableCell>
