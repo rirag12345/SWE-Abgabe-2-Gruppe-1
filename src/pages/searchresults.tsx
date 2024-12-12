@@ -23,12 +23,20 @@ const SearchResults = () => {
   const [books, setBooks] = useState<Book[]>([]);
   const [showResults, setShowResults] = useState(false);
 
-  const fetchBooks = async () => {
+  interface SearchCriteria {
+    isbn?: string;
+  }
+
+  const fetchBooks = async (criteria: SearchCriteria) => {
     try {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      const response = await axios.get('https://localhost:3000/rest');
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-argument
-      setBooks(response.data._embedded.buecher);
+      const response = await axios.get<{ _embedded: { buecher: Book[] } }>('https://localhost:3000/rest');
+      let filteredBooks: Book[] = response.data._embedded.buecher;
+
+      if (criteria.isbn) {
+        filteredBooks = filteredBooks.filter((book: Book) => criteria.isbn && book.isbn.includes(criteria.isbn));
+      }
+
+      setBooks(filteredBooks);
       setShowResults(true);
     } catch (error) {
       console.error('Error fetching books:', error);
