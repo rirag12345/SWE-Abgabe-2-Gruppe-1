@@ -16,9 +16,10 @@ import PropTypes from 'prop-types';
 
 interface SearchBookButtonProps {
   onSearch: (criteria: { isbn: string; title: string; rating: string; tsChecked: boolean; jsChecked: boolean; format: string }) => void;
+  onReset: () => void;
 }
 
-const SearchBookButton: React.FC<SearchBookButtonProps> = ({ onSearch }) => {
+const SearchBookButton: React.FC<SearchBookButtonProps> = ({ onSearch, onReset }) => {
   const [isbn, setIsbn] = useState('');
   const [title, setTitle] = useState('');
   const [rating, setRating] = useState<number | null>(null);
@@ -36,6 +37,16 @@ const SearchBookButton: React.FC<SearchBookButtonProps> = ({ onSearch }) => {
       format,
     };
     onSearch(criteria);
+  };
+
+  const handleReset = () => {
+    setIsbn('');
+    setTitle('');
+    setRating(null);
+    setTsChecked(false);
+    setJsChecked(false);
+    setFormat('');
+    onReset();
   };
 
   return (
@@ -97,6 +108,9 @@ const SearchBookButton: React.FC<SearchBookButtonProps> = ({ onSearch }) => {
         <Button variant="outlined" onClick={handleSearch} fullWidth style={{ marginTop: '20px' }}>
           Search
         </Button>
+        <Button variant="outlined" onClick={handleReset} fullWidth style={{ marginTop: '10px' }}>
+          Zurücksetzen
+        </Button>
       </Paper>
     </Box>
   );
@@ -104,6 +118,7 @@ const SearchBookButton: React.FC<SearchBookButtonProps> = ({ onSearch }) => {
 
 SearchBookButton.propTypes = {
   onSearch: PropTypes.func.isRequired,
+  onReset: PropTypes.func.isRequired,
 };
 
 export default SearchBookButton;
