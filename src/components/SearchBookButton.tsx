@@ -1,4 +1,16 @@
-import { Button, Box, Paper, TextField, Checkbox, FormControlLabel, Radio, RadioGroup, FormControl, FormLabel } from '@mui/material';
+import {
+  Button,
+  Box,
+  Paper,
+  TextField,
+  Checkbox,
+  FormControlLabel,
+  Radio,
+  RadioGroup,
+  FormControl,
+  FormLabel,
+} from '@mui/material';
+import Rating from '@mui/material/Rating';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 
@@ -9,7 +21,7 @@ interface SearchBookButtonProps {
 const SearchBookButton: React.FC<SearchBookButtonProps> = ({ onSearch }) => {
   const [isbn, setIsbn] = useState('');
   const [title, setTitle] = useState('');
-  const [rating, setRating] = useState('');
+  const [rating, setRating] = useState<number | null>(null);
   const [tsChecked, setTsChecked] = useState(false);
   const [jsChecked, setJsChecked] = useState(false);
   const [format, setFormat] = useState('');
@@ -18,7 +30,7 @@ const SearchBookButton: React.FC<SearchBookButtonProps> = ({ onSearch }) => {
     const criteria = {
       isbn,
       title,
-      rating,
+      rating: rating ? rating.toString() : '',
       tsChecked,
       jsChecked,
       format,
@@ -34,7 +46,9 @@ const SearchBookButton: React.FC<SearchBookButtonProps> = ({ onSearch }) => {
           variant="outlined"
           fullWidth
           value={isbn}
-          onChange={(e) => { setIsbn(e.target.value); }}
+          onChange={(e) => {
+            setIsbn(e.target.value);
+          }}
           style={{ marginBottom: '10px' }}
         />
         <TextField
@@ -42,17 +56,22 @@ const SearchBookButton: React.FC<SearchBookButtonProps> = ({ onSearch }) => {
           variant="outlined"
           fullWidth
           value={title}
-          onChange={(e) => { setTitle(e.target.value); }}
+          onChange={(e) => {
+            setTitle(e.target.value);
+          }}
           style={{ marginBottom: '10px' }}
         />
-        <TextField
-          label="Rating"
-          variant="outlined"
-          fullWidth
-          value={rating}
-          onChange={(e) => { setRating(e.target.value); }}
-          style={{ marginBottom: '10px' }}
-        />
+        <Box style={{ marginBottom: '10px' }}>
+          <FormLabel component="legend">Rating</FormLabel>
+          <Rating
+            name="search-rating"
+            value={rating}
+            precision={0.5}
+            onChange={(_event, newValue) => {
+              setRating(newValue);
+            }}
+          />
+        </Box>
         <FormControlLabel
           control={<Checkbox checked={tsChecked} onChange={(e) => { setTsChecked(e.target.checked); }} />}
           label="TS"
@@ -66,14 +85,18 @@ const SearchBookButton: React.FC<SearchBookButtonProps> = ({ onSearch }) => {
           <RadioGroup
             row
             value={format}
-            onChange={(e) => { setFormat(e.target.value); }}
+            onChange={(e) => {
+              setFormat(e.target.value);
+            }}
           >
             <FormControlLabel value="HARDCOVER" control={<Radio />} label="Hardcover" />
             <FormControlLabel value="EPUB" control={<Radio />} label="EPUB" />
             <FormControlLabel value="PAPERBACK" control={<Radio />} label="Paperback" />
           </RadioGroup>
         </FormControl>
-        <Button variant="outlined" onClick={handleSearch} fullWidth style={{ marginTop: '20px' }}>Search</Button>
+        <Button variant="outlined" onClick={handleSearch} fullWidth style={{ marginTop: '20px' }}>
+          Search
+        </Button>
       </Paper>
     </Box>
   );
