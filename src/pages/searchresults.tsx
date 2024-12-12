@@ -77,7 +77,7 @@ const SearchResults = () => {
   return (
     <Container>
       {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
-      <SearchBookButton onSearch={fetchBooks} onReset={() => { setBooks([]); }} />
+      <SearchBookButton onSearch={fetchBooks} />
       {showResults && (
         <>
           <Typography variant="h4" gutterBottom style={{ marginTop: '20px' }}>
