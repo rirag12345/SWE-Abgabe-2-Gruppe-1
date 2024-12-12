@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { Container } from '@mui/material';
 import SignIn from './components/SignIn';
 import Navbar from './components/Navbar';
-import SearchResults from './pages/searchResults';
+import SearchResults from './pages/searchresults';
 
 function App() {
   return (
