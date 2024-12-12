@@ -27,6 +27,9 @@ const SearchResults = () => {
     isbn?: string;
     title?: string;
     rating?: string;
+    tsChecked?: boolean;
+    jsChecked?: boolean;
+    format?: string;
   }
 
   const fetchBooks = async (criteria: SearchCriteria) => {
@@ -42,6 +45,15 @@ const SearchResults = () => {
       }
       if (criteria.rating) {
         filteredBooks = filteredBooks.filter((book: Book) => criteria.rating && book.rating === parseInt(criteria.rating, 10));
+      }
+      if (criteria.tsChecked) {
+        filteredBooks = filteredBooks.filter((book: Book) => book.schlagwoerter?.includes('TYPESCRIPT'));
+      }
+      if (criteria.jsChecked) {
+        filteredBooks = filteredBooks.filter((book: Book) => book.schlagwoerter?.includes('JAVASCRIPT'));
+      }
+      if (criteria.format) {
+        filteredBooks = filteredBooks.filter((book: Book) => book.art === criteria.format);
       }
 
       setBooks(filteredBooks);
