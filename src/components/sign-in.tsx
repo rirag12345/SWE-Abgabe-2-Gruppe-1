@@ -1,28 +1,18 @@
 import { useState } from 'react';
 import { Container, Typography, TextField, Button, Box } from '@mui/material';
 import { z } from 'zod';
+import { EmailSchema, PasswordSchema } from '../features/auth/lib/validators';
 
-const emailSchema = z.string().email({ message: "Ungültiges E-Mail-Format" });
-const passwordSchema = z.string().min(6, { message: "Passwort muss mindestens 6 Zeichen lang sein" });
-
-const SignIn = () => {
+export const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
 
-  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(event.target.value);
-  };
-
-  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(event.target.value);
-  };
-
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      emailSchema.parse(email);
+      EmailSchema.parse(email);
       setEmailError('');
     } catch (e) {
       if (e instanceof z.ZodError) {
@@ -31,7 +21,7 @@ const SignIn = () => {
     }
 
     try {
-      passwordSchema.parse(password);
+      PasswordSchema.parse(password);
       setPasswordError('');
     } catch (e) {
       if (e instanceof z.ZodError) {
@@ -40,7 +30,6 @@ const SignIn = () => {
     }
 
     if (!emailError && !passwordError) {
-      // Wenn wir mehr hinzufügen wollen, an Anmelde Logik- dann hier coden.
       console.log('Email:', email);
       console.log('Password:', password);
     }
@@ -59,7 +48,7 @@ const SignIn = () => {
             fullWidth
             margin="normal"
             value={email}
-            onChange={handleEmailChange}
+            onChange={ (e) => {setEmail(e.target.value)}}
             error={!!emailError}
             helperText={emailError}
           />
@@ -70,7 +59,7 @@ const SignIn = () => {
             fullWidth
             margin="normal"
             value={password}
-            onChange={handlePasswordChange}
+            onChange={(e) => {setPassword(e.target.value)}}
             error={!!passwordError}
             helperText={passwordError}
           />
@@ -83,4 +72,3 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;

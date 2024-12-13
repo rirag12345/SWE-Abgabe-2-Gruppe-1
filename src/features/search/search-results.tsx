@@ -12,59 +12,37 @@ import {
   Paper,
 } from '@mui/material';
 import Rating from '@mui/material/Rating';
-import SearchBookButton from '../components/SearchBookButton';
+import SearchBookButton from './search-book-button';
+import { SearchCriteria } from './types/search';
+import { Book } from '../book/types/book';
 
-const SearchResults = () => {
-  interface Book {
-    isbn: string;
-    rating: number;
-    art: string;
-    preis: number;
-    rabatt: number;
-    lieferbar: boolean;
-    datum: string;
-    homepage: string;
-    schlagwoerter?: string[];
-    titel: {
-      titel: string;
-      untertitel: string;
-    };
-  }
+export const SearchResults = () => {
 
   const [books, setBooks] = useState<Book[]>([]);
   const [showResults, setShowResults] = useState(false);
 
-  interface SearchCriteria {
-    isbn?: string;
-    title?: string;
-    rating?: string;
-    tsChecked?: boolean;
-    jsChecked?: boolean;
-    format?: string;
-  }
-
   const fetchBooks = async (criteria: SearchCriteria) => {
     try {
-      const response = await axios.get<{ _embedded: { buecher: Book[] } }>('https://localhost:3000/rest');
-      let filteredBooks: Book[] = response.data._embedded.buecher;
+      const { data } = await axios.get<{ _embedded: { buecher: Book[] } }>('https://localhost:3000/rest');
+      let filteredBooks = data._embedded.buecher;
 
       if (criteria.isbn) {
-        filteredBooks = filteredBooks.filter((book: Book) => criteria.isbn && book.isbn.includes(criteria.isbn));
+        filteredBooks = filteredBooks.filter((book) => criteria.isbn && book.isbn.includes(criteria.isbn));
       }
       if (criteria.title) {
-        filteredBooks = filteredBooks.filter((book: Book) => criteria.title && book.titel.titel.includes(criteria.title));
+        filteredBooks = filteredBooks.filter((book) => criteria.title && book.titel.titel.includes(criteria.title));
       }
       if (criteria.rating) {
-        filteredBooks = filteredBooks.filter((book: Book) => criteria.rating && book.rating === parseInt(criteria.rating, 10));
+        filteredBooks = filteredBooks.filter((book) => criteria.rating && book.rating === parseInt(criteria.rating, 10));
       }
       if (criteria.tsChecked) {
-        filteredBooks = filteredBooks.filter((book: Book) => book.schlagwoerter?.includes('TYPESCRIPT'));
+        filteredBooks = filteredBooks.filter((book) => book.schlagwoerter?.includes('TYPESCRIPT'));
       }
       if (criteria.jsChecked) {
-        filteredBooks = filteredBooks.filter((book: Book) => book.schlagwoerter?.includes('JAVASCRIPT'));
+        filteredBooks = filteredBooks.filter((book) => book.schlagwoerter?.includes('JAVASCRIPT'));
       }
       if (criteria.format) {
-        filteredBooks = filteredBooks.filter((book: Book) => book.art === criteria.format);
+        filteredBooks = filteredBooks.filter((book) => book.art === criteria.format);
       }
 
       setBooks(filteredBooks);
@@ -135,6 +113,3 @@ const SearchResults = () => {
     </Container>
   );
 };
-
-export default SearchResults;
-

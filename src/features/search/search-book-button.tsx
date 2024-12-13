@@ -13,9 +13,10 @@ import {
 import Rating from '@mui/material/Rating';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
+import { SearchCriteria } from './types/search';
 
 interface SearchBookButtonProps {
-  onSearch: (criteria: { isbn: string; title: string; rating: string; tsChecked: boolean; jsChecked: boolean; format: string }) => void;
+  onSearch: (criteria: SearchCriteria) => void;
 }
 
 const SearchBookButton: React.FC<SearchBookButtonProps> = ({ onSearch }) => {

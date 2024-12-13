@@ -1,6 +1,6 @@
 import { Container, Typography } from '@mui/material';
 
-const Home = () => {
+export const Home = () => {
   return (
     <Container>
       <Typography variant="h4" gutterBottom>
@@ -13,4 +13,3 @@ const Home = () => {
   );
 };
 
-export default Home;
