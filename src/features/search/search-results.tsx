@@ -1,61 +1,54 @@
-import { useState } from 'react';
-import axios from 'axios';
 import {
   Container,
-  Typography,
+  Paper,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
-  Paper,
+  Typography,
 } from '@mui/material';
 import Rating from '@mui/material/Rating';
-import SearchBookButton from './search-book-button';
-import { SearchCriteria } from './types/search';
+import { useEffect, useState } from 'react';
 import { Book } from '../book/types/book';
+import { fetchBooks as fetchBooksFromFilter } from './lib/search-filter';
+import { SearchBookButton } from './search-book-button';
+import { SearchCriteria } from './types/search';
 
 export const SearchResults = () => {
-
   const [books, setBooks] = useState<Book[]>([]);
   const [showResults, setShowResults] = useState(false);
+  const [searchCriteria, setSearchCriteria] = useState<SearchCriteria | null>(
+    null,
+  );
 
-  const fetchBooks = async (criteria: SearchCriteria) => {
-    try {
-      const { data } = await axios.get<{ _embedded: { buecher: Book[] } }>('https://localhost:3000/rest');
-      let filteredBooks = data._embedded.buecher;
+  useEffect(() => {
+    if (!searchCriteria) return;
 
-      if (criteria.isbn) {
-        filteredBooks = filteredBooks.filter((book) => criteria.isbn && book.isbn.includes(criteria.isbn));
+    const fetchBooks = async () => {
+      try {
+        const filteredBooks = await fetchBooksFromFilter(searchCriteria);
+        if (filteredBooks) {
+          setBooks(filteredBooks);
+          setShowResults(true);
+        }
+      } catch (error) {
+        console.error('Error fetching books:', error);
       }
-      if (criteria.title) {
-        filteredBooks = filteredBooks.filter((book) => criteria.title && book.titel.titel.includes(criteria.title));
-      }
-      if (criteria.rating) {
-        filteredBooks = filteredBooks.filter((book) => criteria.rating && book.rating === parseInt(criteria.rating, 10));
-      }
-      if (criteria.tsChecked) {
-        filteredBooks = filteredBooks.filter((book) => book.schlagwoerter?.includes('TYPESCRIPT'));
-      }
-      if (criteria.jsChecked) {
-        filteredBooks = filteredBooks.filter((book) => book.schlagwoerter?.includes('JAVASCRIPT'));
-      }
-      if (criteria.format) {
-        filteredBooks = filteredBooks.filter((book) => book.art === criteria.format);
-      }
+    };
 
-      setBooks(filteredBooks);
-      setShowResults(true);
-    } catch (error) {
-      console.error('Error fetching books:', error);
-    }
+    void fetchBooks();
+  }, [searchCriteria]);
+
+  const handleSearch = (criteria: SearchCriteria) => {
+    setSearchCriteria(criteria);
   };
 
   return (
     <Container>
       {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
-      <SearchBookButton onSearch={fetchBooks} />
+      <SearchBookButton onSearch={handleSearch} />
       {showResults && (
         <>
           <Typography variant="h4" gutterBottom style={{ marginTop: '20px' }}>
@@ -96,11 +89,17 @@ export const SearchResults = () => {
                     <TableCell>{book.lieferbar ? 'Ja' : 'Nein'}</TableCell>
                     <TableCell>{book.datum}</TableCell>
                     <TableCell>
-                      <a href={book.homepage} target="_blank" rel="noopener noreferrer">
+                      <a
+                        href={book.homepage}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
                         {book.homepage}
                       </a>
                     </TableCell>
-                    <TableCell>{book.schlagwoerter ? book.schlagwoerter.join(', ') : ''}</TableCell>
+                    <TableCell>
+                      {book.schlagwoerter ? book.schlagwoerter.join(', ') : ''}
+                    </TableCell>
                     <TableCell>{book.titel.titel}</TableCell>
                     <TableCell>{book.titel.untertitel}</TableCell>
                   </TableRow>

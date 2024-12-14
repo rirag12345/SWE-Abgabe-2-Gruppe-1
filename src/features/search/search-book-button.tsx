@@ -19,7 +19,7 @@ interface SearchBookButtonProps {
   onSearch: (criteria: SearchCriteria) => void;
 }
 
-const SearchBookButton: React.FC<SearchBookButtonProps> = ({ onSearch }) => {
+export const SearchBookButton: React.FC<SearchBookButtonProps> = ({ onSearch }) => {
   const [isbn, setIsbn] = useState('');
   const [title, setTitle] = useState('');
   const [rating, setRating] = useState<number | null>(null);
@@ -118,5 +118,3 @@ const SearchBookButton: React.FC<SearchBookButtonProps> = ({ onSearch }) => {
 SearchBookButton.propTypes = {
   onSearch: PropTypes.func.isRequired,
 };
-
-export default SearchBookButton;
