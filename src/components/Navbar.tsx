@@ -13,7 +13,7 @@ export const Navbar = () => {
         <Button color="inherit" component={Link} to="/signin">Sign In</Button>
         <Button color="inherit" component={Link} to="/">Home</Button>
         <Button color="inherit" component={Link} to="/search-results">Search</Button>
-        <Button color="inherit" component={Link} to="/search-results">Create</Button>
+        <Button color="inherit">Create</Button>
       </Toolbar>
     </AppBar>
   );
