@@ -50,7 +50,7 @@ export const SearchBookButton: React.FC<SearchBookButtonProps> = ({ onSearch }) 
 
   return (
     <Box display="flex" justifyContent="center" alignItems="center" style={{ marginTop: '20px' }}>
-      <Paper elevation={3} style={{ padding: '20px', textAlign: 'center', width: '300px' }}>
+      <Paper elevation={3} style={{ padding: '20px', textAlign: 'center', width: '450px' }}>
         <TextField
           label="ISBN"
           variant="outlined"
@@ -84,11 +84,11 @@ export const SearchBookButton: React.FC<SearchBookButtonProps> = ({ onSearch }) 
         </Box>
         <FormControlLabel
           control={<Checkbox checked={tsChecked} onChange={(e) => { setTsChecked(e.target.checked); }} />}
-          label="TS"
+          label="TypeScript"
         />
         <FormControlLabel
           control={<Checkbox checked={jsChecked} onChange={(e) => { setJsChecked(e.target.checked); }} />}
-          label="JS"
+          label="JavaScript"
         />
         <FormControl component="fieldset" style={{ marginTop: '10px' }}>
           <FormLabel component="legend">Art</FormLabel>
