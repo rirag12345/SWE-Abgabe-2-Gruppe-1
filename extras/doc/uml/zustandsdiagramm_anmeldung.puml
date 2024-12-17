@@ -1,4 +1,4 @@
-@startuml anmeldung
+@startuml zustandsdiagramm_anmeldung
 skinparam Dpi 400
 
 hide empty description
