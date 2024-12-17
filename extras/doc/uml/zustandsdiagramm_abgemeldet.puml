@@ -14,7 +14,7 @@ state Suche{
     note "Clientseitige Validierung" as note
     Suchformular --> note
 
-    Suchformular --> Waiting: Button "Suchen"
+    Suchformular --> Waiting: Button "OK"
 
     state Suchergebnis{
         state c <<choice>>
@@ -27,12 +27,11 @@ state Suche{
     Waiting --> Suchergebnis : Suchergebnis eingetroffen
 }
 
-[*] --> Suche: Button "Suche"
-[*] -right-> Fehler: Button "Neuanlegen"
-[*] -left-> Home: Button "Login"
+[*] --> Suche: Button "Suchen"
+[*] -left-> Anmeldung: Button "Anmelden"
 
-note "Startseite nach übersprungener Anmeldung" as note2
-[*] -up-> note2
+note "Home" as note2
+[*] -right-> note2
 }
 
 @enduml

@@ -1,0 +1,40 @@
+@startuml anmeldung
+skinparam Dpi 400
+
+hide empty description
+
+title UML-Zustandsdiagramm für den "Page Flow" bei der Anmeldung
+caption (c) Botan Coban, Felix Jäger, Philip Neuffer
+
+state "index.html" as index {
+index : jwt
+index : roles
+index : expiration
+
+state Anmeldung {
+    [*] --> Eingabeformular
+    Eingabeformular --> Eingabeformular : Anmeldedaten eingeben
+    note "Clientseitige Validierung" as note2
+    Eingabeformular -left-> note2
+
+    state c <<choice>>
+    Eingabeformular --> c : Button "OK"
+
+    c -up-> Eingabeformular: Ungültige Anmeldedaten
+    note on link
+        Fehlermeldung
+    end note
+
+    c --> [*]: Gültige Anmeldedaten
+    note on link
+        Rollenwechsel
+    end note
+    }
+
+    [*] --> Anmeldung: Button "Anmelden"
+
+    note "Home" as note
+    [*] -right-> note
+}
+
+@enduml

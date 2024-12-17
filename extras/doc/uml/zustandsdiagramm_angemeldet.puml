@@ -17,7 +17,7 @@ state Suche{
     note "Clientseitige Validierung" as note
     Suchformular --> note
 
-    Suchformular --> Waiting: Button "Suchen"
+    Suchformular --> Waiting: Button "OK"
 
     state Suchergebnis{
         state c <<choice>>
@@ -30,13 +30,13 @@ state Suche{
     Waiting --> Suchergebnis : Suchergebnis eingetroffen
 }
 
-state Neuanlegen {
+state Neuanlage {
     state c2 <<choice>>
 
     [*] --> Eingabeformular
     Eingabeformular --> Eingabeformular : Buchdaten eingeben
     note "Clientseitige Validierung" as note3
-    Eingabeformular --> note3
+    Eingabeformular -up-> note3
 
     Eingabeformular --> c2: Button "OK"
     c2 -up-> Eingabeformular: Fehlerhafte Daten
@@ -44,13 +44,16 @@ state Neuanlegen {
     c2 --> [*]: Korrekte Daten
 }
 
-[*] --> Suche: Button "Suche"
-[*] --> Neuanlegen: Button "Neuanlegen"
+[*] --> Suche: Button "Suchen"
+[*] --> Neuanlage: Button "Neuanlegen"
 
-[*] -left-> Home: Button "Logout"
+[*] -right-> [*]: Button "Abmelden"
+note on link
+    Rollenwechsel
+end note
 
-note "Startseite nach Anmeldung" as note2
-[*] -right-> note2
+note "Home" as note2
+[*] -left-> note2
 }
 
 @enduml
