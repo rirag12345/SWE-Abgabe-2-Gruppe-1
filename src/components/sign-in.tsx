@@ -2,24 +2,14 @@ import { useState } from 'react';
 import { Container, Typography, TextField, Button, Box } from '@mui/material';
 import { z } from 'zod';
 import { EmailSchema, PasswordSchema } from '../features/auth/lib/validators';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 
 const tokenUrl: string = import.meta.env.VITE_TOKEN_URL as string;
-// const url: string = import.meta.env.VITE_KEYCLOAK_URL as string;
-// const realm: string = import.meta.env.VITE_KEYCLOAK_REALM as string;
-// const clientId: string = import.meta.env.VITE_KEYCLOAK_CLIENT_ID as string;
-// console.log(
-//   {
-//     url: url,
-//     realm: realm,
-//     clientId: clientId
-//   }
-// );
 
 export const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  // const [token, setToken] = useState('');
+  const [JWT, setJWT] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
 
@@ -49,8 +39,14 @@ export const SignIn = () => {
       axios.post(tokenUrl,{
         username: email,
         password: password
-      }).then((result) => { console.log(result); })
-      .catch(((error: unknown) => {console.log(error)}));
+      }).then((result) => {
+        setJWT(result.data);
+        console.log(JWT);
+      })
+      .catch(((e: AxiosError) => {
+        setPasswordError(e.message);
+        setEmailError(e.message);
+      }));
     }
   };
 
