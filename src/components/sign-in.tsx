@@ -10,8 +10,8 @@ const tokenUrl: string = import.meta.env.VITE_TOKEN_URL as string;
 export const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [JWT, setJWT] = useState(undefined);
-  const [refreshToken, setRefreshToken] = useState(undefined);
+  const [JWT, setJWT] = useState('');
+  const [refreshToken, setRefreshToken] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
 
