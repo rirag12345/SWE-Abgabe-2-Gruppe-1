@@ -1,8 +1,8 @@
+import { Box, Button, Container, TextField, Typography } from '@mui/material';
+import axios from 'axios';
 import { useState } from 'react';
-import { Container, Typography, TextField, Button, Box } from '@mui/material';
 import { z } from 'zod';
 import { EmailSchema, PasswordSchema } from '../features/auth/lib/validators';
-import axios from 'axios';
 
 const tokenUrl: string = import.meta.env.VITE_TOKEN_URL as string;
 // const url: string = import.meta.env.VITE_KEYCLOAK_URL as string;
@@ -44,13 +44,19 @@ export const SignIn = () => {
       }
     }
 
-    if(!emailError && !passwordError){
+    if (!emailError && !passwordError) {
       //TODO token  aus der Response extrahieren und in die token variable kopieren --> evtl noch Funktion um den Token nach ablauf automatich zu löschen
-      axios.post(tokenUrl,{
-        username: email,
-        password: password
-      }).then((result) => { console.log(result); })
-      .catch(((error: unknown) => {console.log(error)}));
+      axios
+        .post(tokenUrl, {
+          username: email,
+          password: password,
+        })
+        .then((result) => {
+          console.log(result);
+        })
+        .catch((error: unknown) => {
+          console.log(error);
+        });
     }
   };
 
@@ -67,7 +73,9 @@ export const SignIn = () => {
             fullWidth
             margin="normal"
             value={email}
-            onChange={ (e) => {setEmail(e.target.value)}}
+            onChange={(e) => {
+              setEmail(e.target.value);
+            }}
             error={!!emailError}
             helperText={emailError}
           />
@@ -78,7 +86,9 @@ export const SignIn = () => {
             fullWidth
             margin="normal"
             value={password}
-            onChange={(e) => {setPassword(e.target.value)}}
+            onChange={(e) => {
+              setPassword(e.target.value);
+            }}
             error={!!passwordError}
             helperText={passwordError}
           />
@@ -90,4 +100,3 @@ export const SignIn = () => {
     </Container>
   );
 };
-
