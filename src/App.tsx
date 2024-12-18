@@ -1,6 +1,6 @@
 import { Container } from '@mui/material';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
-import { Navbar } from './components/Navbar';
+import { Navbar } from './components/navbar';
 import { SignIn } from './components/sign-in';
 import { SearchResults } from './features/search/search-results';
 
