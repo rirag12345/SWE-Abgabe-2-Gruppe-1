@@ -10,7 +10,8 @@ const tokenUrl: string = import.meta.env.VITE_TOKEN_URL as string;
 export const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [JWT, setJWT] = useState('');
+  const [JWT, setJWT] = useState(undefined);
+  const [refreshToken, setRefreshToken] = useState(undefined);
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
 
@@ -50,11 +51,16 @@ export const SignIn = () => {
           password: password,
         })
         .then((result) => {
-          setJWT(result.data);
-          console.log(JWT);
+          // console.log('JWT:\n', result.data.access_token);
+          // console.log('refresh:\n', result.data.refresh_token);
+          setJWT(result.data.access_token);
+          setRefreshToken(result.data.refresh_token);
           navigate('/');
         })
         .catch((e: AxiosError) => {
+          if (e.status === 401) {
+            e.message = 'The username or password you provided is incorrect';
+          }
           setPasswordError(e.message);
           setEmailError(e.message);
         });
