@@ -55,6 +55,11 @@ export const SignIn = () => {
           // console.log('refresh:\n', result.data.refresh_token);
           setJWT(result.data.access_token);
           setRefreshToken(result.data.refresh_token);
+
+          //Reset email and password so they are not exposed longer then needed
+          setEmail('');
+          setPassword('');
+          
           navigate('/');
         })
         .catch((e: AxiosError) => {
