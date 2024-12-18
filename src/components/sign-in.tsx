@@ -1,8 +1,9 @@
+import { Box, Button, Container, TextField, Typography } from '@mui/material';
+import axios, { AxiosError } from 'axios';
 import { useState } from 'react';
-import { Container, Typography, TextField, Button, Box } from '@mui/material';
+import { NavigateFunction, useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 import { EmailSchema, PasswordSchema } from '../features/auth/lib/validators';
-import axios, { AxiosError } from 'axios';
 
 const tokenUrl: string = import.meta.env.VITE_TOKEN_URL as string;
 
@@ -13,39 +14,50 @@ export const SignIn = () => {
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
 
+  const navigate: NavigateFunction = useNavigate();
+
+  /*this is needed due to the asynchronous nature of updating stateful react variables
+    otherwise the post request could occasionally be run before the 'setEmailError' and 'setPasswordError' functions finish executing
+  */
+  let localEmailError: boolean = false;
+  let localPasswordError: boolean = false;
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     // temporär so --> man müsste in Keycloak das Passwort und die Email ändern --> Habe bei mir in Keycloak das Passwort auf: 123456 geändert
     try {
       EmailSchema.parse(email);
-      setEmailError('');
     } catch (e) {
       if (e instanceof z.ZodError) {
         setEmailError(e.errors[0].message);
+        localEmailError = true;
       }
     }
 
     try {
       PasswordSchema.parse(password);
-      setPasswordError('');
     } catch (e) {
       if (e instanceof z.ZodError) {
         setPasswordError(e.errors[0].message);
+        localPasswordError = true;
       }
     }
 
-    if(!emailError && !passwordError){
-      axios.post(tokenUrl,{
-        username: email,
-        password: password
-      }).then((result) => {
-        setJWT(result.data);
-        console.log(JWT);
-      })
-      .catch(((e: AxiosError) => {
-        setPasswordError(e.message);
-        setEmailError(e.message);
-      }));
+    if (!localEmailError && !localPasswordError) {
+      axios
+        .post(tokenUrl, {
+          username: email,
+          password: password,
+        })
+        .then((result) => {
+          setJWT(result.data);
+          console.log(JWT);
+          navigate('/');
+        })
+        .catch((e: AxiosError) => {
+          setPasswordError(e.message);
+          setEmailError(e.message);
+        });
     }
   };
 
@@ -62,7 +74,9 @@ export const SignIn = () => {
             fullWidth
             margin="normal"
             value={email}
-            onChange={ (e) => {setEmail(e.target.value)}}
+            onChange={(e) => {
+              setEmail(e.target.value);
+            }}
             error={!!emailError}
             helperText={emailError}
           />
@@ -73,7 +87,9 @@ export const SignIn = () => {
             fullWidth
             margin="normal"
             value={password}
-            onChange={(e) => {setPassword(e.target.value)}}
+            onChange={(e) => {
+              setPassword(e.target.value);
+            }}
             error={!!passwordError}
             helperText={passwordError}
           />
@@ -85,4 +101,3 @@ export const SignIn = () => {
     </Container>
   );
 };
-
