@@ -35,7 +35,6 @@ export const SignIn = () => {
     }
 
     if(!emailError && !passwordError){
-      //TODO token  aus der Response extrahieren und in die token variable kopieren --> evtl noch Funktion um den Token nach ablauf automatich zu löschen
       axios.post(tokenUrl,{
         username: email,
         password: password
