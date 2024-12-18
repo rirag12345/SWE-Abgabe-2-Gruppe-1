@@ -1,5 +1,7 @@
+import SearchIcon from '@mui/icons-material/Search';
 import {
   Container,
+  IconButton,
   Paper,
   Table,
   TableBody,
@@ -11,6 +13,7 @@ import {
 } from '@mui/material';
 import Rating from '@mui/material/Rating';
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Book } from '../book/types/book';
 import { fetchBooks as fetchBooksFromFilter } from './lib/search-filter';
 import { SearchBookButton } from './search-book-button';
@@ -47,7 +50,6 @@ export const SearchResults = () => {
 
   return (
     <Container>
-      {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
       <SearchBookButton onSearch={handleSearch} />
       {showResults && (
         <>
@@ -69,6 +71,7 @@ export const SearchResults = () => {
                   <TableCell>Schlagwörter</TableCell>
                   <TableCell>Titel</TableCell>
                   <TableCell>Untertitel</TableCell>
+                  <TableCell>Details</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -102,6 +105,14 @@ export const SearchResults = () => {
                     </TableCell>
                     <TableCell>{book.titel.titel}</TableCell>
                     <TableCell>{book.titel.untertitel}</TableCell>
+                    <TableCell>
+                      <IconButton
+                        component={Link}
+                        to={`/book-details/${book.isbn}`}
+                      >
+                        <SearchIcon />
+                      </IconButton>
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
