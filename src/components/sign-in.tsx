@@ -23,24 +23,32 @@ export const SignIn = () => {
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
 
+  const navigate: NavigateFunction = useNavigate();
+
+  /*this is needed due to the asynchronous nature of updating stateful react variables
+    otherwise the post request could occasionally be run before the 'setEmailError' and 'setPasswordError' functions finish executing
+  */
+  let localEmailError: boolean = false;
+  let localPasswordError: boolean = false;
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     // temporär so --> man müsste in Keycloak das Passwort und die Email ändern --> Habe bei mir in Keycloak das Passwort auf: 123456 geändert
     try {
       EmailSchema.parse(email);
-      setEmailError('');
     } catch (e) {
       if (e instanceof z.ZodError) {
         setEmailError(e.errors[0].message);
+        localEmailError = true;
       }
     }
 
     try {
       PasswordSchema.parse(password);
-      setPasswordError('');
     } catch (e) {
       if (e instanceof z.ZodError) {
         setPasswordError(e.errors[0].message);
+        localPasswordError = true;
       }
     }
 
