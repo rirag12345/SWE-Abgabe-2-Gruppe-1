@@ -1,25 +1,17 @@
 import { Box, Button, Container, TextField, Typography } from '@mui/material';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { useState } from 'react';
+import { NavigateFunction, useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 import { EmailSchema, PasswordSchema } from '../features/auth/lib/validators';
 
 const tokenUrl: string = import.meta.env.VITE_TOKEN_URL as string;
-// const url: string = import.meta.env.VITE_KEYCLOAK_URL as string;
-// const realm: string = import.meta.env.VITE_KEYCLOAK_REALM as string;
-// const clientId: string = import.meta.env.VITE_KEYCLOAK_CLIENT_ID as string;
-// console.log(
-//   {
-//     url: url,
-//     realm: realm,
-//     clientId: clientId
-//   }
-// );
 
 export const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  // const [token, setToken] = useState('');
+  const [JWT, setJWT] = useState('');
+  const [refreshToken, setRefreshToken] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
 
@@ -52,18 +44,30 @@ export const SignIn = () => {
       }
     }
 
-    if (!emailError && !passwordError) {
-      //TODO token  aus der Response extrahieren und in die token variable kopieren --> evtl noch Funktion um den Token nach ablauf automatich zu löschen
+    if (!localEmailError && !localPasswordError) {
       axios
         .post(tokenUrl, {
           username: email,
           password: password,
         })
         .then((result) => {
-          console.log(result);
+          // console.log('JWT:\n', result.data.access_token);
+          // console.log('refresh:\n', result.data.refresh_token);
+          setJWT(result.data.access_token);
+          setRefreshToken(result.data.refresh_token);
+
+          //Reset email and password so they are not exposed longer then needed
+          setEmail('');
+          setPassword('');
+
+          navigate('/');
         })
-        .catch((error: unknown) => {
-          console.log(error);
+        .catch((e: AxiosError) => {
+          if (e.status === 401) {
+            e.message = 'The username or password you provided is incorrect';
+          }
+          setPasswordError(e.message);
+          setEmailError(e.message);
         });
     }
   };
