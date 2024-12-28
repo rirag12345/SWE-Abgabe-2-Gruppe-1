@@ -17,6 +17,7 @@ export const SignIn = () => {
 
   const navigate: NavigateFunction = useNavigate();
 
+  //TODO useEffect und lokalStorage
   /*this is needed due to the asynchronous nature of updating stateful react variables
     otherwise the post request could occasionally be run before the 'setEmailError' and 'setPasswordError' functions finish executing
   */
