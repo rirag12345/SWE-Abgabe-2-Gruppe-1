@@ -1,6 +1,6 @@
 import { Box, Button, Container, TextField, Typography } from '@mui/material';
 import axios, { AxiosError } from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { NavigateFunction, useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 import { EmailSchema, PasswordSchema } from '../features/auth/lib/validators';
@@ -21,56 +21,54 @@ export const SignIn = () => {
   /*this is needed due to the asynchronous nature of updating stateful react variables
     otherwise the post request could occasionally be run before the 'setEmailError' and 'setPasswordError' functions finish executing
   */
-  let localEmailError: boolean = false;
-  let localPasswordError: boolean = false;
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    // temporär so --> man müsste in Keycloak das Passwort und die Email ändern --> Habe bei mir in Keycloak das Passwort auf: 123456 geändert
+  useEffect(() => {
     try {
       EmailSchema.parse(email);
+      setEmailError(''); // Clear the error if no exception is thrown
     } catch (e) {
       if (e instanceof z.ZodError) {
         setEmailError(e.errors[0].message);
-        localEmailError = true;
       }
     }
+  }, [email]);
 
+  useEffect(() => {
     try {
       PasswordSchema.parse(password);
+      setPasswordError(''); // Clear the error if no exception is thrown
     } catch (e) {
       if (e instanceof z.ZodError) {
         setPasswordError(e.errors[0].message);
-        localPasswordError = true;
       }
     }
+  }, [password]);
 
-    if (!localEmailError && !localPasswordError) {
-      axios
-        .post(tokenUrl, {
-          username: email,
-          password: password,
-        })
-        .then((result) => {
-          // console.log('JWT:\n', result.data.access_token);
-          // console.log('refresh:\n', result.data.refresh_token);
-          setJWT(result.data.access_token);
-          setRefreshToken(result.data.refresh_token);
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
 
-          //Reset email and password so they are not exposed longer then needed
-          setEmail('');
-          setPassword('');
+    axios
+      .post(tokenUrl, {
+        username: email,
+        password: password,
+      })
+      .then((result) => {
+        console.log('JWT:\n', result.data.access_token);
+        console.log('refresh:\n', result.data.refresh_token);
 
-          navigate('/');
-        })
-        .catch((e: AxiosError) => {
-          if (e.status === 401) {
-            e.message = 'The username or password you provided is incorrect';
-          }
-          setPasswordError(e.message);
-          setEmailError(e.message);
-        });
-    }
+        //Reset email and password so they are not exposed longer then needed
+        setEmail('');
+        setPassword('');
+
+        navigate('/');
+      })
+      .catch((e: AxiosError) => {
+        if (e.status === 401) {
+          e.message = 'The username or password you provided is incorrect';
+        }
+        setPasswordError(e.message);
+        setEmailError(e.message);
+      });
   };
 
   return (
@@ -105,7 +103,13 @@ export const SignIn = () => {
             error={!!passwordError}
             helperText={passwordError}
           />
-          <Button type="submit" variant="contained" color="primary" fullWidth>
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            fullWidth
+            disabled={!!emailError || !!passwordError}
+          >
             Sign In
           </Button>
         </form>
