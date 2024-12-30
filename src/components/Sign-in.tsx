@@ -17,7 +17,7 @@ export const SignIn = () => {
   useEffect(() => {
     try {
       EmailSchema.parse(email);
-      setEmailError(''); // Clear the error if no exception is thrown
+      setEmailError('');
     } catch (e) {
       if (e instanceof z.ZodError) {
         setEmailError(e.errors[0].message);
@@ -28,7 +28,7 @@ export const SignIn = () => {
   useEffect(() => {
     try {
       PasswordSchema.parse(password);
-      setPasswordError(''); // Clear the error if no exception is thrown
+      setPasswordError('');
     } catch (e) {
       if (e instanceof z.ZodError) {
         setPasswordError(e.errors[0].message);
@@ -48,7 +48,7 @@ export const SignIn = () => {
         localStorage.setItem('JWT', result.data.access_token);
         localStorage.setItem('refreshToken', result.data.refresh_token);
 
-        //Reset email and password so they are not exposed longer then needed
+        // TODO check if needed
         setEmail('');
         setPassword('');
 
