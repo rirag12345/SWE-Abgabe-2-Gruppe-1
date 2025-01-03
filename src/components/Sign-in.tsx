@@ -18,9 +18,9 @@ export const SignIn = () => {
     try {
       EmailSchema.parse(email);
       setEmailError('');
-    } catch (e) {
-      if (e instanceof z.ZodError) {
-        setEmailError(e.errors[0].message);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        setEmailError(error.errors[0].message);
       }
     }
   }, [email]);
@@ -29,9 +29,9 @@ export const SignIn = () => {
     try {
       PasswordSchema.parse(password);
       setPasswordError('');
-    } catch (e) {
-      if (e instanceof z.ZodError) {
-        setPasswordError(e.errors[0].message);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        setPasswordError(error.errors[0].message);
       }
     }
   }, [password]);
@@ -54,12 +54,12 @@ export const SignIn = () => {
 
         navigate('/');
       })
-      .catch((e: AxiosError) => {
-        if (e.status === 401) {
-          e.message = 'The username or password you provided is incorrect';
+      .catch((error: AxiosError) => {
+        if (error.status === 401) {
+          error.message = 'The username or password you provided is incorrect';
         }
-        setPasswordError(e.message);
-        setEmailError(e.message);
+        setPasswordError(error.message);
+        setEmailError(error.message);
       });
   };
 
