@@ -1,31 +1,35 @@
 import {
-  Button,
   Box,
-  Paper,
-  TextField,
+  Button,
   Checkbox,
+  FormControl,
   FormControlLabel,
+  FormLabel,
+  Paper,
   Radio,
   RadioGroup,
-  FormControl,
-  FormLabel,
+  TextField,
+  Typography,
 } from '@mui/material';
 import Rating from '@mui/material/Rating';
-import { useState } from 'react';
 import PropTypes from 'prop-types';
+import { useState } from 'react';
 import { SearchCriteria } from './types/search';
-
+import { SearchCriteriaSchema } from '../auth/lib/validators';
 interface SearchBookButtonProps {
   onSearch: (criteria: SearchCriteria) => void;
 }
 
-export const SearchBookButton: React.FC<SearchBookButtonProps> = ({ onSearch }) => {
+export const SearchBookButton: React.FC<SearchBookButtonProps> = ({
+  onSearch,
+}) => {
   const [isbn, setIsbn] = useState('');
   const [title, setTitle] = useState('');
   const [rating, setRating] = useState<number | null>(null);
   const [tsChecked, setTsChecked] = useState(false);
   const [jsChecked, setJsChecked] = useState(false);
   const [format, setFormat] = useState('');
+  const [errors, setErrors] = useState<string[]>([]);
 
   const handleSearch = () => {
     const criteria = {
@@ -36,6 +40,16 @@ export const SearchBookButton: React.FC<SearchBookButtonProps> = ({ onSearch }) 
       jsChecked,
       format,
     };
+
+    const result = SearchCriteriaSchema.safeParse(criteria);
+    if (!result.success) {
+      setErrors(
+        result.error.errors.map((error: { message: any }) => error.message),
+      );
+      return;
+    }
+
+    setErrors([]);
     onSearch(criteria);
   };
 
@@ -46,11 +60,20 @@ export const SearchBookButton: React.FC<SearchBookButtonProps> = ({ onSearch }) 
     setTsChecked(false);
     setJsChecked(false);
     setFormat('');
+    setErrors([]);
   };
 
   return (
-    <Box display="flex" justifyContent="center" alignItems="center" style={{ marginTop: '20px' }}>
-      <Paper elevation={3} style={{ padding: '20px', textAlign: 'center', width: '450px' }}>
+    <Box
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      style={{ marginTop: '20px', width: '100%' }}
+    >
+      <Paper
+        elevation={3}
+        style={{ padding: '20px', textAlign: 'center', width: '500px' }}
+      >
         <TextField
           label="ISBN"
           variant="outlined"
@@ -83,12 +106,26 @@ export const SearchBookButton: React.FC<SearchBookButtonProps> = ({ onSearch }) 
           />
         </Box>
         <FormControlLabel
-          control={<Checkbox checked={tsChecked} onChange={(e) => { setTsChecked(e.target.checked); }} />}
-          label="TypeScript"
+          control={
+            <Checkbox
+              checked={tsChecked}
+              onChange={(e) => {
+                setTsChecked(e.target.checked);
+              }}
+            />
+          }
+          label="TS"
         />
         <FormControlLabel
-          control={<Checkbox checked={jsChecked} onChange={(e) => { setJsChecked(e.target.checked); }} />}
-          label="JavaScript"
+          control={
+            <Checkbox
+              checked={jsChecked}
+              onChange={(e) => {
+                setJsChecked(e.target.checked);
+              }}
+            />
+          }
+          label="JS"
         />
         <FormControl component="fieldset" style={{ marginTop: '10px' }}>
           <FormLabel component="legend">Art</FormLabel>
@@ -99,15 +136,40 @@ export const SearchBookButton: React.FC<SearchBookButtonProps> = ({ onSearch }) 
               setFormat(e.target.value);
             }}
           >
-            <FormControlLabel value="HARDCOVER" control={<Radio />} label="Hardcover" />
+            <FormControlLabel
+              value="HARDCOVER"
+              control={<Radio />}
+              label="Hardcover"
+            />
             <FormControlLabel value="EPUB" control={<Radio />} label="EPUB" />
-            <FormControlLabel value="PAPERBACK" control={<Radio />} label="Paperback" />
+            <FormControlLabel
+              value="PAPERBACK"
+              control={<Radio />}
+              label="Paperback"
+            />
           </RadioGroup>
         </FormControl>
-        <Button variant="outlined" onClick={handleSearch} fullWidth style={{ marginTop: '20px' }}>
+        {errors.length > 0 && (
+          <Box style={{ marginBottom: '10px', color: 'red' }}>
+            {errors.map((error, index) => (
+              <Typography key={index}>{error}</Typography>
+            ))}
+          </Box>
+        )}
+        <Button
+          variant="outlined"
+          onClick={handleSearch}
+          fullWidth
+          style={{ marginTop: '20px' }}
+        >
           Search
         </Button>
-        <Button variant="outlined" onClick={handleReset} fullWidth style={{ marginTop: '10px' }}>
+        <Button
+          variant="outlined"
+          onClick={handleReset}
+          fullWidth
+          style={{ marginTop: '10px' }}
+        >
           Zurücksetzen
         </Button>
       </Paper>
