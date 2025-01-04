@@ -5,7 +5,7 @@ export const EmailSchema = z
     .email({ message: 'Ungültiges E-Mail-Format' });
 export const PasswordSchema = z
     .string()
-    .min(1, { message: 'Passwort muss mindestens 6 Zeichen lang sein' });
+    .min(1, { message: 'Passwort muss mindestens 1 Zeichen lang sein' });
 
 export const SearchCriteriaSchema = z.object({
     isbn: z
