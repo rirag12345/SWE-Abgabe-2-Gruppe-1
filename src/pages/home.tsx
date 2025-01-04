@@ -6,10 +6,7 @@ export const Home = () => {
       <Typography variant="h4" gutterBottom>
         Home Page
       </Typography>
-      <Typography>
-        Sie sind auf der Startseite!
-      </Typography>
+      <Typography>Sie sind auf der Startseite!</Typography>
     </Container>
   );
 };
-

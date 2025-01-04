@@ -5,4 +5,4 @@ export interface SearchCriteria {
     tsChecked?: boolean;
     jsChecked?: boolean;
     format?: string;
-  }
+}

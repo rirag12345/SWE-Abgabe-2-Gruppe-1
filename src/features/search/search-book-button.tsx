@@ -14,8 +14,8 @@ import {
 import Rating from '@mui/material/Rating';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
-import { SearchCriteria } from './types/search';
 import { SearchCriteriaSchema } from '../auth/lib/validators';
+import { SearchCriteria } from './types/search';
 interface SearchBookButtonProps {
   onSearch: (criteria: SearchCriteria) => void;
 }

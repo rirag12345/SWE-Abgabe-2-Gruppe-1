@@ -9,7 +9,7 @@ export interface Book {
     homepage: string;
     schlagwoerter?: string[];
     titel: {
-      titel: string;
-      untertitel: string;
+        titel: string;
+        untertitel: string;
     };
-  }
+}
