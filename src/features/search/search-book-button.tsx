@@ -44,7 +44,7 @@ export const SearchBookButton: React.FC<SearchBookButtonProps> = ({
     const result = SearchCriteriaSchema.safeParse(criteria);
     if (!result.success) {
       setErrors(
-        result.error.errors.map((error: { message: any }) => error.message),
+        result.error.errors.map((error: { message: string }) => error.message),
       );
       return;
     }

@@ -7,6 +7,15 @@ import { EmailSchema, PasswordSchema } from '../features/auth/lib/validators';
 
 const tokenUrl: string = import.meta.env.VITE_TOKEN_URL as string;
 
+/**
+ * SignIn Komponente welche das Anmelden mit Email und Passwort erlaubt
+ * Validiert Email und Passwort mit den zugehörigen Zod Schemas und gibt die Fehlermeldungen aus.
+ * Nach erfolgreichen Login werden access und refresh token im Localstorage gespeichert und es wird auf
+ *
+ * @component
+ *
+ * @returns {JSX.Element} The rendered SignIn component.
+ */
 export const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
