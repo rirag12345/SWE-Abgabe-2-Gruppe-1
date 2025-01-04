@@ -1,4 +1,4 @@
-# Bücher
+# BuchWeb single-page application
 
 ##
 
