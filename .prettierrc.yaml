@@ -5,4 +5,5 @@ overrides:
   - files: ['*.ts', '*.tsx', '*.mts', '*.js', '*.mjs', '*.cjs']
     options:
       tabWidth: 4
+      jsxSingleQuote: true
 plugins: [prettier-plugin-organize-imports]
