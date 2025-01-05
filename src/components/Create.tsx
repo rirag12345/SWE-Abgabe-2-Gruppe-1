@@ -6,9 +6,16 @@ import { useState } from 'react';
 export function Create() {
     const [isbn, setIsbn] = useState('');
     const [rating, setRating] = useState('');
-    const [price, setPrice] = useState('');
-    const [discount, setDiscount] = useState('');
-    const [title, setTitle] = useState('');
+    const [preis, setPreis] = useState('');
+    const [rabatt, setRabatt] = useState('');
+    const [titel, setTitel] = useState('');
+    // const [art, setArt] = useState('');
+    // const [lieferbar, setLieferbar] = useState('');
+    // const [datum, setDatum] = useState('');
+    // const [homepage, setHomepage] = useState('');
+    // const [schlagwoerter, setSchlagwoerter] = useState('');
+    // const [untertitel, setUntertitel] = useState('');
+    // const [abbildungen, setAbbildungen] = useState('');
     const [buttonDisabled, setButtonDisabled] = useState(false);
     const [showAlert, setShowAlert] = useState(false);
 
@@ -20,9 +27,9 @@ export function Create() {
                 {
                     isbn: isbn,
                     rating: parseInt(rating),
-                    preis: parseFloat(price),
-                    rabatt: parseFloat(discount),
-                    titel: { titel: title },
+                    preis: parseFloat(preis),
+                    rabatt: setRabatt(rabatt),
+                    titel: { titel: titel },
                 },
                 {
                     headers: {
@@ -42,16 +49,25 @@ export function Create() {
     function reset() {
         setIsbn('');
         setRating('');
-        setPrice('');
-        setDiscount('');
-        setTitle('');
+        setPreis('');
+        setRabatt('');
+        setTitel('');
         setButtonDisabled(false);
         setShowAlert(false);
     }
 
     return (
         <Container>
-            <Box sx={{ display: 'block' }}>
+            <Box
+                sx={{
+                    m: 'auto',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    flexWrap: 'wrap',
+                    alignItems: 'center',
+                    gap: '0.5em',
+                }}
+            >
                 <TextField
                     required
                     id='isbn-textField'
@@ -70,28 +86,77 @@ export function Create() {
                 />
                 <TextField
                     required
-                    id='price-textField'
+                    id='preis-textField'
                     label='preis'
                     variant='filled'
-                    value={price}
-                    onChange={(e) => setPrice(e.target.value)}
+                    value={preis}
+                    onChange={(e) => setPreis(e.target.value)}
                 />
                 <TextField
                     required
-                    id='discount-textField'
+                    id='rabatt-textField'
                     label='rabatt'
                     variant='filled'
-                    value={discount}
-                    onChange={(e) => setDiscount(e.target.value)}
+                    value={rabatt}
+                    onChange={(e) => setRabatt(e.target.value)}
                 />
                 <TextField
                     required
-                    id='title-textField'
+                    id='titel-textField'
                     label='titel'
                     variant='filled'
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
+                    value={titel}
+                    onChange={(e) => setTitel(e.target.value)}
                 />
+                {/* <TextField
+                    id='art-textField'
+                    label='art'
+                    variant='filled'
+                    value={art}
+                    onChange={(e) => setArt(e.target.value)}
+                />
+                <TextField
+                    id='lieferbar-textField'
+                    label='lieferbar'
+                    variant='filled'
+                    value={lieferbar}
+                    onChange={(e) => setLieferbar(e.target.value)}
+                />
+                <TextField
+                    id='datum-textField'
+                    label='datum'
+                    variant='filled'
+                    value={datum}
+                    onChange={(e) => setDatum(e.target.value)}
+                />
+                <TextField
+                    id='homepage-textField'
+                    label='homepage'
+                    variant='filled'
+                    value={homepage}
+                    onChange={(e) => setHomepage(e.target.value)}
+                />
+                <TextField
+                    id='schlagwoerter-textField'
+                    label='schlagwoerter'
+                    variant='filled'
+                    value={schlagwoerter}
+                    onChange={(e) => setSchlagwoerter(e.target.value)}
+                />
+                <TextField
+                    id='untertitel-textField'
+                    label='untertitel'
+                    variant='filled'
+                    value={untertitel}
+                    onChange={(e) => setUntertitel(e.target.value)}
+                />
+                <TextField
+                    id='abbildungen-textField'
+                    label='abbildungen'
+                    variant='filled'
+                    value={abbildungen}
+                    onChange={(e) => setAbbildungen(e.target.value)}
+                /> */}
                 <Button
                     onClick={handleClick}
                     variant='contained'
