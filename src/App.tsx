@@ -1,5 +1,6 @@
 import { Container } from '@mui/material';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import { Create } from './components/Create';
 import { Navbar } from './components/Navbar';
 import { SignIn } from './components/Sign-in';
 import { BookDetails } from './features/search/book-details';
@@ -28,6 +29,7 @@ export const App = () => {
                             path="/book-details/:isbn"
                             element={<BookDetails />}
                         />
+                        <Route path="/create" element={<Create />} />
                     </Routes>
                 </Container>
             </div>

@@ -25,7 +25,9 @@ export const Navbar = () => {
                     >
                         Search
                     </Button>
-                    <Button color="inherit">Create</Button>
+                    <Button color="inherit" component={Link} to="/create">
+                        Create
+                    </Button>
                 </Box>
                 <Box
                     sx={{
