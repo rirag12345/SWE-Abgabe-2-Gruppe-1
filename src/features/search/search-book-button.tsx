@@ -5,9 +5,9 @@ import {
     FormControl,
     FormControlLabel,
     FormLabel,
+    MenuItem,
     Paper,
-    Radio,
-    RadioGroup,
+    Select,
     TextField,
     Typography,
 } from '@mui/material';
@@ -19,7 +19,6 @@ import { SearchCriteria } from './types/search';
 interface SearchBookButtonProps {
     onSearch: (criteria: SearchCriteria) => void;
 }
-
 export const SearchBookButton: React.FC<SearchBookButtonProps> = ({
     onSearch,
 }) => {
@@ -67,9 +66,9 @@ export const SearchBookButton: React.FC<SearchBookButtonProps> = ({
 
     return (
         <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
+            display='flex'
+            justifyContent='center'
+            alignItems='center'
             style={{ marginTop: '20px', width: '100%' }}
         >
             <Paper
@@ -77,8 +76,8 @@ export const SearchBookButton: React.FC<SearchBookButtonProps> = ({
                 style={{ padding: '20px', textAlign: 'center', width: '500px' }}
             >
                 <TextField
-                    label="ISBN"
-                    variant="outlined"
+                    label='ISBN'
+                    variant='outlined'
                     fullWidth
                     value={isbn}
                     onChange={(e) => {
@@ -87,8 +86,8 @@ export const SearchBookButton: React.FC<SearchBookButtonProps> = ({
                     style={{ marginBottom: '10px' }}
                 />
                 <TextField
-                    label="Titel"
-                    variant="outlined"
+                    label='Titel'
+                    variant='outlined'
                     fullWidth
                     value={title}
                     onChange={(e) => {
@@ -97,9 +96,9 @@ export const SearchBookButton: React.FC<SearchBookButtonProps> = ({
                     style={{ marginBottom: '10px' }}
                 />
                 <Box style={{ marginBottom: '10px' }}>
-                    <FormLabel component="legend">Rating</FormLabel>
+                    <FormLabel component='legend'>Rating</FormLabel>
                     <Rating
-                        name="search-rating"
+                        name='search-rating'
                         value={rating}
                         precision={0.5}
                         onChange={(_event, newValue) => {
@@ -116,7 +115,7 @@ export const SearchBookButton: React.FC<SearchBookButtonProps> = ({
                             }}
                         />
                     }
-                    label="TS"
+                    label='TS'
                 />
                 <FormControlLabel
                     control={
@@ -127,33 +126,23 @@ export const SearchBookButton: React.FC<SearchBookButtonProps> = ({
                             }}
                         />
                     }
-                    label="JS"
+                    label='JS'
                 />
-                <FormControl component="fieldset" style={{ marginTop: '10px' }}>
-                    <FormLabel component="legend">Art</FormLabel>
-                    <RadioGroup
-                        row
+                <FormControl
+                    fullWidth
+                    style={{ marginTop: '10px', marginBottom: '10px' }}
+                >
+                    <FormLabel component='legend'>Art</FormLabel>
+                    <Select
                         value={format}
                         onChange={(e) => {
-                            setFormat(e.target.value);
+                            setFormat(e.target.value as string);
                         }}
                     >
-                        <FormControlLabel
-                            value="HARDCOVER"
-                            control={<Radio />}
-                            label="Hardcover"
-                        />
-                        <FormControlLabel
-                            value="EPUB"
-                            control={<Radio />}
-                            label="EPUB"
-                        />
-                        <FormControlLabel
-                            value="PAPERBACK"
-                            control={<Radio />}
-                            label="Paperback"
-                        />
-                    </RadioGroup>
+                        <MenuItem value='HARDCOVER'>Hardcover</MenuItem>
+                        <MenuItem value='EPUB'>EPUB</MenuItem>
+                        <MenuItem value='PAPERBACK'>Paperback</MenuItem>
+                    </Select>
                 </FormControl>
                 {errors.length > 0 && (
                     <Box style={{ marginBottom: '10px', color: 'red' }}>
@@ -163,7 +152,7 @@ export const SearchBookButton: React.FC<SearchBookButtonProps> = ({
                     </Box>
                 )}
                 <Button
-                    variant="outlined"
+                    variant='outlined'
                     onClick={handleSearch}
                     fullWidth
                     style={{ marginTop: '20px' }}
@@ -171,7 +160,7 @@ export const SearchBookButton: React.FC<SearchBookButtonProps> = ({
                     Search
                 </Button>
                 <Button
-                    variant="outlined"
+                    variant='outlined'
                     onClick={handleReset}
                     fullWidth
                     style={{ marginTop: '10px' }}
