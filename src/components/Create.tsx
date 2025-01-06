@@ -13,6 +13,9 @@ export function Create() {
     const [showAlert, setShowAlert] = useState(false);
 
     async function handleSubmit() {
+        if (buttonDisabled) {
+            return; // prevent multiple submissions while waiting for the response
+        }
         setButtonDisabled(true);
         try {
             const response = await axios.post(
@@ -40,19 +43,19 @@ export function Create() {
     }
 
     function reset() {
+        setShowAlert(false);
         setIsbn('');
         setRating('');
         setPreis('');
         setRabatt('');
         setTitel('');
         setButtonDisabled(false);
-        setShowAlert(false);
     }
 
     return (
         <Container>
             <Box
-                component='form'
+                component='form' // render as form element
                 autoComplete='off'
                 onSubmit={(event) => {
                     event.preventDefault(); // preventing default behavior of reloading the whole page after a form submission
@@ -60,10 +63,10 @@ export function Create() {
                 }}
                 sx={{
                     m: 'auto',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    flexWrap: 'wrap',
-                    alignItems: 'center',
+                    display: 'flex', // render as flex container
+                    flexDirection: 'column', // stack the children vertically
+                    flexWrap: 'wrap', // prevent overflow of children
+                    alignItems: 'center', // center the children horizontally without stretching them
                     gap: '0.5em',
                 }}
             >
