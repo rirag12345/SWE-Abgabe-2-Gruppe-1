@@ -16,7 +16,7 @@
 import SendIcon from '@mui/icons-material/Send';
 import { Alert, Box, Button, Container, TextField } from '@mui/material';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { CreateSchema } from '../features/auth/lib/validators';
 
 /**
@@ -33,7 +33,6 @@ export function Create() {
     const [titel, setTitel] = useState('');
 
     // states for validation
-    // FIXME bei invalidem initalem Wert hat das Feld sofort den error zustand
     const [isbnError, setIsbnError] = useState('');
     const [ratingError, setRatingError] = useState('');
     const [preisError, setPreisError] = useState('');
@@ -43,59 +42,51 @@ export function Create() {
     // state for alert
     const [showAlert, setShowAlert] = useState(false);
 
-    useEffect(() => {
-        const validateFields = () => {
-            const result = CreateSchema.safeParse({
-                isbn,
-                rating,
-                preis,
-                rabatt,
-                titel,
+    const validateFields = () => {
+        const result = CreateSchema.safeParse({
+            isbn,
+            rating,
+            preis,
+            rabatt,
+            titel,
+        });
+
+        if (!result.success) {
+            result.error.errors.forEach((error) => {
+                switch (error.path[0]) {
+                    case 'isbn':
+                        setIsbnError(error.message);
+                        break;
+                    case 'rating':
+                        setRatingError(error.message);
+                        break;
+                    case 'preis':
+                        setPreisError(error.message);
+                        break;
+                    case 'rabatt':
+                        setRabattError(error.message);
+                        break;
+                    case 'titel':
+                        setTitelError(error.message);
+                        break;
+                    default:
+                        break;
+                }
             });
-
-            if (!result.success) {
-                result.error.errors.forEach((error) => {
-                    switch (error.path[0]) {
-                        case 'isbn':
-                            setIsbnError(error.message);
-                            break;
-                        case 'rating':
-                            setRatingError(error.message);
-                            break;
-                        case 'preis':
-                            setPreisError(error.message);
-                            break;
-                        case 'rabatt':
-                            setRabattError(error.message);
-                            break;
-                        case 'titel':
-                            setTitelError(error.message);
-                            break;
-                        default:
-                            break;
-                    }
-                });
-            } else {
-                setIsbnError('');
-                setRatingError('');
-                setPreisError('');
-                setRabattError('');
-                setTitelError('');
-            }
-        };
-
-        validateFields();
-    }, [isbn, rating, preis, rabatt, titel]);
+            return false;
+        } else {
+            setIsbnError('');
+            setRatingError('');
+            setPreisError('');
+            setRabattError('');
+            setTitelError('');
+            return true;
+        }
+    };
 
     async function handleSubmit() {
         // prevent submission if there are validation errors
-        if (
-            !!isbnError ||
-            !!ratingError ||
-            !!preisError ||
-            !!rabattError ||
-            !!titelError
-        ) {
+        if (!validateFields()) {
             return;
         }
 
@@ -157,7 +148,10 @@ export function Create() {
                     label='isbn'
                     variant='filled'
                     value={isbn}
-                    onChange={(e) => setIsbn(e.target.value)}
+                    onChange={(e) => {
+                        setIsbn(e.target.value);
+                        setIsbnError('');
+                    }}
                     error={!!isbnError}
                     helperText={isbnError}
                 />
@@ -168,7 +162,10 @@ export function Create() {
                     label='rating'
                     variant='filled'
                     value={rating}
-                    onChange={(e) => setRating(e.target.value)}
+                    onChange={(e) => {
+                        setRating(e.target.value);
+                        setRatingError('');
+                    }}
                     error={!!ratingError}
                     helperText={ratingError}
                 />
@@ -179,7 +176,10 @@ export function Create() {
                     label='preis'
                     variant='filled'
                     value={preis}
-                    onChange={(e) => setPreis(e.target.value)}
+                    onChange={(e) => {
+                        setPreis(e.target.value);
+                        setPreisError('');
+                    }}
                     error={!!preisError}
                     helperText={preisError}
                 />
@@ -190,7 +190,10 @@ export function Create() {
                     label='rabatt'
                     variant='filled'
                     value={rabatt}
-                    onChange={(e) => setRabatt(e.target.value)}
+                    onChange={(e) => {
+                        setRabatt(e.target.value);
+                        setRabattError('');
+                    }}
                     error={!!rabattError}
                     helperText={rabattError}
                 />
@@ -201,7 +204,10 @@ export function Create() {
                     label='titel'
                     variant='filled'
                     value={titel}
-                    onChange={(e) => setTitel(e.target.value)}
+                    onChange={(e) => {
+                        setTitel(e.target.value);
+                        setTitelError('');
+                    }}
                     error={!!titelError}
                     helperText={titelError}
                 />
