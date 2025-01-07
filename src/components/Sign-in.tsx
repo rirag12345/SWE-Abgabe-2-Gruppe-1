@@ -1,16 +1,15 @@
 import { Box, Button, Container, TextField, Typography } from '@mui/material';
 import axios, { AxiosError } from 'axios';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { NavigateFunction, useNavigate } from 'react-router-dom';
-import { z } from 'zod';
-import { EmailSchema, PasswordSchema } from '../features/auth/lib/validators';
+import { SignInSchema } from '../features/auth/lib/validators';
 
 const tokenUrl: string = import.meta.env.VITE_TOKEN_URL as string;
 
 /**
  * SignIn Komponente welche das Anmelden mit Email und Passwort erlaubt
  * Validiert Email und Passwort mit den zugehörigen Zod Schemas und gibt die Fehlermeldungen aus.
- * Nach erfolgreichen Login werden access und refresh token im Localstorage gespeichert und es wird auf
+ * Nach erfolgreichen Login werden access und refresh token im Localstorage gespeichert und es wird auf die Home Seite navigiert.
  *
  * @component
  *
@@ -23,30 +22,37 @@ export const SignIn = () => {
     const [passwordError, setPasswordError] = useState('');
     const navigate: NavigateFunction = useNavigate();
 
-    useEffect(() => {
-        try {
-            EmailSchema.parse(email);
-            setEmailError('');
-        } catch (error) {
-            if (error instanceof z.ZodError) {
-                setEmailError(error.errors[0].message);
-            }
-        }
-    }, [email]);
+    const validateFields = () => {
+        const result = SignInSchema.safeParse({
+            email,
+            password,
+        });
 
-    useEffect(() => {
-        try {
-            PasswordSchema.parse(password);
-            setPasswordError('');
-        } catch (error) {
-            if (error instanceof z.ZodError) {
-                setPasswordError(error.errors[0].message);
-            }
+        if (!result.success) {
+            result.error.errors.forEach((error) => {
+                switch (error.path[0]) {
+                    case 'email':
+                        setEmailError(error.message);
+                        break;
+                    case 'password':
+                        setPasswordError(error.message);
+                        break;
+                    default:
+                        break;
+                }
+            });
+            return false;
         }
-    }, [password]);
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
+        setEmailError('');
+        setPasswordError('');
+        return true;
+    };
+
+    const handleSubmit = () => {
+        if (!validateFields()) {
+            return;
+        }
 
         axios
             .post(tokenUrl, {
@@ -74,47 +80,57 @@ export const SignIn = () => {
     };
 
     return (
-        <Container maxWidth="sm">
-            <Box mt={5}>
-                <Typography variant="h4" gutterBottom>
+        <Container maxWidth='sm'>
+            <Box
+                mt={5}
+                component='form'
+                onSubmit={(event) => {
+                    event.preventDefault(); // preventing default behavior of reloading the whole page after a form submission
+                    handleSubmit();
+                }}
+                autoComplete='off'
+            >
+                <Typography variant='h4' gutterBottom>
                     Sign In
                 </Typography>
-                <form onSubmit={handleSubmit}>
-                    <TextField
-                        label="Email"
-                        variant="outlined"
-                        fullWidth
-                        margin="normal"
-                        value={email}
-                        onChange={(e) => {
-                            setEmail(e.target.value);
-                        }}
-                        error={!!emailError}
-                        helperText={emailError}
-                    />
-                    <TextField
-                        label="Password"
-                        type="password"
-                        variant="outlined"
-                        fullWidth
-                        margin="normal"
-                        value={password}
-                        onChange={(e) => {
-                            setPassword(e.target.value);
-                        }}
-                        error={!!passwordError}
-                        helperText={passwordError}
-                    />
-                    <Button
-                        type="submit"
-                        variant="contained"
-                        color="primary"
-                        fullWidth
-                        disabled={!!emailError || !!passwordError}
-                    >
-                        Sign In
-                    </Button>
-                </form>
+                <TextField
+                    required
+                    label='Email'
+                    variant='outlined'
+                    fullWidth
+                    margin='normal'
+                    value={email}
+                    onChange={(e) => {
+                        setEmail(e.target.value);
+                        setEmailError('');
+                    }}
+                    error={!!emailError}
+                    helperText={emailError}
+                />
+                <TextField
+                    required
+                    label='Password'
+                    type='password'
+                    variant='outlined'
+                    fullWidth
+                    margin='normal'
+                    value={password}
+                    onChange={(e) => {
+                        setPassword(e.target.value);
+                        setPasswordError('');
+                    }}
+                    error={!!passwordError}
+                    helperText={passwordError}
+                />
+                <Button
+                    type='submit'
+                    variant='contained'
+                    color='primary'
+                    fullWidth
+                    disabled={!!emailError || !!passwordError}
+                >
+                    Sign In
+                </Button>
             </Box>
         </Container>
     );
