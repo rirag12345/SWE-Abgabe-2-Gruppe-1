@@ -16,23 +16,91 @@
 import SendIcon from '@mui/icons-material/Send';
 import { Alert, Box, Button, Container, TextField } from '@mui/material';
 import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { CreateSchema } from '../features/auth/lib/validators';
 
+/**
+ * Create component for creating a new book
+ * @returns JSX.Element for rendering the component
+ * @author Felix Jaeger
+ */
 export function Create() {
+    // states for text fields
     const [isbn, setIsbn] = useState('');
     const [rating, setRating] = useState('');
     const [preis, setPreis] = useState('');
     const [rabatt, setRabatt] = useState('');
     const [titel, setTitel] = useState('');
-    const [buttonDisabled, setButtonDisabled] = useState(false);
+
+    // states for validation
+    // FIXME bei invalidem initalem Wert hat das Feld sofort den error zustand
+    const [isbnError, setIsbnError] = useState('');
+    const [ratingError, setRatingError] = useState('');
+    const [preisError, setPreisError] = useState('');
+    const [rabattError, setRabattError] = useState('');
+    const [titelError, setTitelError] = useState('');
+
+    // state for alert
     const [showAlert, setShowAlert] = useState(false);
 
+    useEffect(() => {
+        const validateFields = () => {
+            const result = CreateSchema.safeParse({
+                isbn,
+                rating,
+                preis,
+                rabatt,
+                titel,
+            });
+
+            if (!result.success) {
+                result.error.errors.forEach((error) => {
+                    switch (error.path[0]) {
+                        case 'isbn':
+                            setIsbnError(error.message);
+                            break;
+                        case 'rating':
+                            setRatingError(error.message);
+                            break;
+                        case 'preis':
+                            setPreisError(error.message);
+                            break;
+                        case 'rabatt':
+                            setRabattError(error.message);
+                            break;
+                        case 'titel':
+                            setTitelError(error.message);
+                            break;
+                        default:
+                            break;
+                    }
+                });
+            } else {
+                setIsbnError('');
+                setRatingError('');
+                setPreisError('');
+                setRabattError('');
+                setTitelError('');
+            }
+        };
+
+        validateFields();
+    }, [isbn, rating, preis, rabatt, titel]);
+
     async function handleSubmit() {
-        if (buttonDisabled) {
-            return; // prevent multiple submissions while waiting for the response
+        // prevent submission if there are validation errors
+        if (
+            !!isbnError ||
+            !!ratingError ||
+            !!preisError ||
+            !!rabattError ||
+            !!titelError
+        ) {
+            return;
         }
-        setButtonDisabled(true);
+
         try {
+            // send data to server
             const response = await axios.post(
                 'https://localhost:3000/rest',
                 {
@@ -49,26 +117,24 @@ export function Create() {
                     },
                 },
             );
+
             if (response.status === 201) {
                 setShowAlert(true);
             }
         } catch (error) {
             console.error(error);
+        } finally {
+            // reset form
+            setIsbn('');
+            setRating('');
+            setPreis('');
+            setRabatt('');
+            setTitel('');
         }
     }
 
-    function reset() {
-        setShowAlert(false);
-        setIsbn('');
-        setRating('');
-        setPreis('');
-        setRabatt('');
-        setTitel('');
-        setButtonDisabled(false);
-    }
-
     return (
-        <Container>
+        <Container maxWidth='xs'>
             <Box
                 component='form' // render as form element
                 autoComplete='off'
@@ -80,62 +146,85 @@ export function Create() {
                     m: 'auto',
                     display: 'flex', // render as flex container
                     flexDirection: 'column', // stack the children vertically
-                    flexWrap: 'wrap', // prevent overflow of children
                     alignItems: 'center', // center the children horizontally without stretching them
                     gap: '0.5em',
                 }}
             >
                 <TextField
+                    fullWidth
                     required
                     id='isbn-textField'
                     label='isbn'
                     variant='filled'
                     value={isbn}
                     onChange={(e) => setIsbn(e.target.value)}
+                    error={!!isbnError}
+                    helperText={isbnError}
                 />
                 <TextField
+                    fullWidth
                     required
                     id='rating-textField'
                     label='rating'
                     variant='filled'
                     value={rating}
                     onChange={(e) => setRating(e.target.value)}
+                    error={!!ratingError}
+                    helperText={ratingError}
                 />
                 <TextField
+                    fullWidth
                     required
                     id='preis-textField'
                     label='preis'
                     variant='filled'
                     value={preis}
                     onChange={(e) => setPreis(e.target.value)}
+                    error={!!preisError}
+                    helperText={preisError}
                 />
                 <TextField
+                    fullWidth
                     required
                     id='rabatt-textField'
                     label='rabatt'
                     variant='filled'
                     value={rabatt}
                     onChange={(e) => setRabatt(e.target.value)}
+                    error={!!rabattError}
+                    helperText={rabattError}
                 />
                 <TextField
+                    fullWidth
                     required
                     id='titel-textField'
                     label='titel'
                     variant='filled'
                     value={titel}
                     onChange={(e) => setTitel(e.target.value)}
+                    error={!!titelError}
+                    helperText={titelError}
                 />
                 <Button
                     type='submit'
                     variant='contained'
                     endIcon={<SendIcon />}
-                    disabled={buttonDisabled}
+                    disabled={
+                        !!isbnError ||
+                        !!ratingError ||
+                        !!preisError ||
+                        !!rabattError ||
+                        !!titelError
+                    }
                 >
                     OK
                 </Button>
                 {showAlert && (
-                    <Alert severity='success' onClose={() => reset()}>
-                        Success!
+                    <Alert
+                        severity='success'
+                        onClose={() => setShowAlert(false)}
+                    >
+                        Created!
                     </Alert>
                 )}
             </Box>
