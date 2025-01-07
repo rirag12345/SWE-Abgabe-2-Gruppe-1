@@ -74,14 +74,14 @@ export function Create() {
                 }
             });
             return false;
-        } else {
-            setIsbnError('');
-            setRatingError('');
-            setPreisError('');
-            setRabattError('');
-            setTitelError('');
-            return true;
         }
+
+        setIsbnError('');
+        setRatingError('');
+        setPreisError('');
+        setRabattError('');
+        setTitelError('');
+        return true;
     };
 
     async function handleSubmit() {
@@ -114,14 +114,14 @@ export function Create() {
             }
         } catch (error) {
             console.error(error);
-        } finally {
-            // reset form
-            setIsbn('');
-            setRating('');
-            setPreis('');
-            setRabatt('');
-            setTitel('');
         }
+
+        // reset form
+        setIsbn('');
+        setRating('');
+        setPreis('');
+        setRabatt('');
+        setTitel('');
     }
 
     return (
