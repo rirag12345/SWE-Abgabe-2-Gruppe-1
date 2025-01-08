@@ -1,10 +1,15 @@
 import { z } from 'zod';
 
 export const SignInSchema = z.object({
-    email: z.string().email({ message: 'Ungültiges E-Mail-Format' }),
-    password: z
+    email: z
         .string()
-        .min(1, { message: 'Passwort muss mindestens 1 Zeichen lang sein' }),
+        .toLowerCase()
+        .trim()
+        .email({ message: 'Ungültiges E-Mail-Format' }),
+    password: z.string().trim().min(1, {
+        message:
+            'Passwort muss mindestens 1 Zeichen lang sein und darf nicht leer sein',
+    }),
 });
 
 export const SearchCriteriaSchema = z.object({
