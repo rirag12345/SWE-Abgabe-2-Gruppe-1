@@ -46,10 +46,11 @@ export function Create() {
     const [rabattError, setRabattError] = useState('');
     const [titelError, setTitelError] = useState('');
 
-    // state for alert
-    const [showAlert, setShowAlert] = useState(false);
+    // states for alert
+    const [successAlert, setSuccessAlert] = useState(false);
+    const [errorAlert, setErrorAlert] = useState('');
 
-    const validateFields = () => {
+    function validateFields() {
         const result = CreateSchema.safeParse({
             isbn,
             rating,
@@ -89,17 +90,18 @@ export function Create() {
         setRabattError('');
         setTitelError('');
         return true;
-    };
+    }
 
     async function handleSubmit() {
+        setSuccessAlert(false);
+        setErrorAlert('');
         // prevent submission if there are validation errors
         if (!validateFields()) {
             return;
         }
 
-        try {
-            // send data to server
-            const response = await axios.post(
+        axios
+            .post(
                 'https://localhost:3000/rest',
                 {
                     isbn: isbn,
@@ -114,14 +116,27 @@ export function Create() {
                         Authorization: `Bearer ${localStorage.getItem('JWT')}`,
                     },
                 },
-            );
+            )
+            .then((response) => {
+                if (response.status === 201) {
+                    setSuccessAlert(true);
+                    setTimeout(() => {
+                        setSuccessAlert(false);
+                    }, 5000);
+                }
+            })
+            .catch((error) => {
+                if (error.status === 400) {
+                    setErrorAlert(
+                        `Bad request: ${error.response.data.message[0]}`,
+                    );
+                    setTimeout(() => {
+                        setErrorAlert('');
+                    }, 5000);
+                }
 
-            if (response.status === 201) {
-                setShowAlert(true);
-            }
-        } catch (error) {
-            console.error(error);
-        }
+                console.error(error);
+            });
 
         // reset form
         setIsbn('');
@@ -243,13 +258,22 @@ export function Create() {
                 >
                     OK
                 </Button>
-                {showAlert && (
+                {successAlert && (
                     <Alert
                         severity='success'
-                        onClose={() => setShowAlert(false)}
+                        onClose={() => setSuccessAlert(false)}
                         role='alert' // accessible role for screen readers
                     >
                         Created!
+                    </Alert>
+                )}
+                {errorAlert && (
+                    <Alert
+                        severity='error'
+                        onClose={() => setErrorAlert('')}
+                        role='alert' // accessible role for screen readers
+                    >
+                        {errorAlert}
                     </Alert>
                 )}
             </Box>
