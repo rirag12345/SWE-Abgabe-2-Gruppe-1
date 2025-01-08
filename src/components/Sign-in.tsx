@@ -50,9 +50,9 @@ export const SignIn = () => {
     };
 
     const handleSubmit = () => {
-        // if (!validateFields()) {
-        //     return;
-        // }
+        if (!validateFields()) {
+            return;
+        }
         //FIXME Das ist eigentlich unnötig, der submit button ist aus wenn es Fehler bei der Validierung gibt --> Siehe Zeile 127 (alternativ validate Fields in Zeile 127 eintragen und if clause entfernen)
 
         axios
