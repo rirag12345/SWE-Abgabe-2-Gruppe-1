@@ -14,7 +14,14 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import SendIcon from '@mui/icons-material/Send';
-import { Alert, Box, Button, Container, TextField } from '@mui/material';
+import {
+    Alert,
+    Box,
+    Button,
+    Container,
+    TextField,
+    Typography,
+} from '@mui/material';
 import axios from 'axios';
 import { useState } from 'react';
 import { CreateSchema } from '../features/auth/lib/validators';
@@ -125,7 +132,16 @@ export function Create() {
     }
 
     return (
-        <Container maxWidth='xs'>
+        <Container component='section' maxWidth='xs'>
+            <Typography
+                component='h1'
+                id='create-book-form'
+                align='center'
+                variant='h4'
+                gutterBottom
+            >
+                Create a new book
+            </Typography>
             <Box
                 component='form' // render as form element
                 autoComplete='off'
@@ -140,6 +156,7 @@ export function Create() {
                     alignItems: 'center', // center the children horizontally without stretching them
                     gap: '0.5em',
                 }}
+                aria-labelledby='create-book-form' // associates the form with the heading
             >
                 <TextField
                     fullWidth
@@ -222,6 +239,7 @@ export function Create() {
                         !!rabattError ||
                         !!titelError
                     }
+                    aria-label='submit' // accessible label for screen readers
                 >
                     OK
                 </Button>
@@ -229,6 +247,7 @@ export function Create() {
                     <Alert
                         severity='success'
                         onClose={() => setShowAlert(false)}
+                        role='alert' // accessible role for screen readers
                     >
                         Created!
                     </Alert>
