@@ -13,7 +13,7 @@ const tokenUrl: string = import.meta.env.VITE_TOKEN_URL as string;
  *
  * @component
  *
- * @returns {JSX.Element} The rendered SignIn component.
+ * @returns Die gerenderte Komponente.
  */
 export const SignIn = () => {
     const [email, setEmail] = useState('');
@@ -62,10 +62,6 @@ export const SignIn = () => {
             .then((result) => {
                 localStorage.setItem('JWT', result.data.access_token);
                 localStorage.setItem('refreshToken', result.data.refresh_token);
-
-                // TODO check if needed
-                setEmail('');
-                setPassword('');
 
                 navigate('/');
             })
