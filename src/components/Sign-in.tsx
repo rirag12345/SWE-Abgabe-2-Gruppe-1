@@ -50,9 +50,10 @@ export const SignIn = () => {
     };
 
     const handleSubmit = () => {
-        if (!validateFields()) {
-            return;
-        }
+        // if (!validateFields()) {
+        //     return;
+        // }
+        //FIXME Das ist eigentlich unnötig, der submit button ist aus wenn es Fehler bei der Validierung gibt
 
         axios
             .post(tokenUrl, {
