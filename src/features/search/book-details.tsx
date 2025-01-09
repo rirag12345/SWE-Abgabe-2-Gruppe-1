@@ -2,7 +2,7 @@ import { Container, Typography, Box, Rating, Paper } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Book } from '../book/types/book';
-import { fetchBooks as fetchBooksFromFilter } from './lib/search-filter';
+import { fetchBooks } from './lib/search-filter';
 
 export const BookDetails = () => {
   const { isbn } = useParams<{ isbn: string }>();
@@ -11,7 +11,7 @@ export const BookDetails = () => {
   useEffect(() => {
     const fetchBookDetails = async () => {
       try {
-        const books = await fetchBooksFromFilter({ isbn });
+        const books = await fetchBooks({ isbn });
         if (books && books.length > 0) {
           setBook(books[0]);
         }

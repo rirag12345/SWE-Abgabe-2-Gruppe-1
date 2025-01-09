@@ -11,12 +11,10 @@ import {
     RadioGroup,
     Select,
     TextField,
-    Typography,
 } from '@mui/material';
 import Rating from '@mui/material/Rating';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
-import { SearchCriteriaSchema } from '../auth/lib/validators';
 import { SearchCriteria } from './types/search';
 
 interface SearchBookButtonProps {
@@ -35,7 +33,6 @@ export const SearchBookButton: React.FC<SearchBookButtonProps> = ({
     const [jaChecked, setJaChecked] = useState(false);
     const [art, setArt] = useState('');
     const [lieferbar, setLieferbar] = useState(true);
-    const [errors, setErrors] = useState<string[]>([]);
 
     const handleSearch = () => {
         const criteria = {
@@ -50,17 +47,6 @@ export const SearchBookButton: React.FC<SearchBookButtonProps> = ({
             lieferbar,
         };
 
-        const result = SearchCriteriaSchema.safeParse(criteria);
-        if (!result.success) {
-            setErrors(
-                result.error.errors.map(
-                    (error: { message: string }) => error.message,
-                ),
-            );
-            return;
-        }
-
-        setErrors([]);
         onSearch(criteria);
     };
 
@@ -74,7 +60,6 @@ export const SearchBookButton: React.FC<SearchBookButtonProps> = ({
         setJaChecked(false);
         setArt('');
         setLieferbar(false);
-        setErrors([]);
     };
 
     return (
@@ -113,7 +98,10 @@ export const SearchBookButton: React.FC<SearchBookButtonProps> = ({
                         onChange={(_event, newValue) => setRating(newValue)}
                     />
                 </Box>
-                <Box style={{ marginBottom: '10px' }}>
+                <Box
+                    style={{ marginBottom: '10px' }}
+                    sx={{ justifyContent: 'center', alignItems: 'center' }}
+                >
                     <FormLabel component='legend'>Schlagwoerter</FormLabel>
                     <RadioGroup row name='RadioGroup-schlagwoerter'>
                         <FormControlLabel
@@ -193,13 +181,6 @@ export const SearchBookButton: React.FC<SearchBookButtonProps> = ({
                     }
                     label='Lieferbar'
                 />
-                {errors.length > 0 && (
-                    <Box style={{ marginBottom: '10px', color: 'red' }}>
-                        {errors.map((error, index) => (
-                            <Typography key={index}>{error}</Typography>
-                        ))}
-                    </Box>
-                )}
                 <Button
                     variant='outlined'
                     onClick={handleSearch}
