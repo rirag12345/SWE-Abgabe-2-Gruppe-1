@@ -22,8 +22,8 @@ export const Navbar: React.FC<NavbarProps> = ({ isAuthenticated }) => {
             }}
         >
             <Toolbar>
-                <AutoStoriesIcon />
-                <Box sx={{ flexGrow: 1 }}>
+                <AutoStoriesIcon sx={{ marginRight: '1em' }} />
+                <Box sx={{ flexGrow: 1, display: 'flex', gap: '1em' }}>
                     <Button color='inherit' component={Link} to='/'>
                         Home
                     </Button>
