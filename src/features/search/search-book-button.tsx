@@ -59,7 +59,7 @@ export const SearchBookButton: React.FC<SearchBookButtonProps> = ({
         setPyChecked(false);
         setJaChecked(false);
         setArt('');
-        setLieferbar(false);
+        setLieferbar(true);
     };
 
     return (
@@ -67,11 +67,15 @@ export const SearchBookButton: React.FC<SearchBookButtonProps> = ({
             display='flex'
             justifyContent='center'
             alignItems='center'
-            style={{ marginTop: '20px', width: '100%' }}
+            style={{ width: '100%' }}
         >
             <Paper
                 elevation={3}
-                style={{ padding: '20px', textAlign: 'center', width: '500px' }}
+                style={{
+                    padding: '0.3em',
+                    textAlign: 'center',
+                    width: '500px',
+                }}
             >
                 <TextField
                     label='ISBN'
@@ -79,7 +83,7 @@ export const SearchBookButton: React.FC<SearchBookButtonProps> = ({
                     fullWidth
                     value={isbn}
                     onChange={(e) => setIsbn(e.target.value)}
-                    style={{ marginBottom: '10px' }}
+                    style={{ marginBottom: '0.2em' }}
                 />
                 <TextField
                     label='Titel'
@@ -87,9 +91,9 @@ export const SearchBookButton: React.FC<SearchBookButtonProps> = ({
                     fullWidth
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
-                    style={{ marginBottom: '10px' }}
+                    style={{ marginBottom: '0.2em' }}
                 />
-                <Box style={{ marginBottom: '10px' }}>
+                <Box>
                     <FormLabel component='legend'>Rating</FormLabel>
                     <Rating
                         name='search-rating'
@@ -103,7 +107,7 @@ export const SearchBookButton: React.FC<SearchBookButtonProps> = ({
                     flexDirection='column'
                     justifyContent='center'
                     alignItems='center'
-                    style={{ marginBottom: '10px', width: '100%' }}
+                    style={{ width: '100%' }}
                 >
                     <FormLabel component='legend'>Schlagwoerter</FormLabel>
                     <RadioGroup
@@ -166,10 +170,7 @@ export const SearchBookButton: React.FC<SearchBookButtonProps> = ({
                     </RadioGroup>
                 </Box>
 
-                <FormControl
-                    fullWidth
-                    style={{ marginTop: '10px', marginBottom: '10px' }}
-                >
+                <FormControl fullWidth>
                     <FormLabel component='legend'>Art</FormLabel>
                     <Select
                         value={art}
@@ -189,19 +190,14 @@ export const SearchBookButton: React.FC<SearchBookButtonProps> = ({
                     }
                     label='Lieferbar'
                 />
-                <Button
-                    variant='outlined'
-                    onClick={handleSearch}
-                    fullWidth
-                    style={{ marginTop: '20px' }}
-                >
+                <Button variant='outlined' onClick={handleSearch} fullWidth>
                     Search
                 </Button>
                 <Button
                     variant='outlined'
                     onClick={handleReset}
                     fullWidth
-                    style={{ marginTop: '10px' }}
+                    style={{ marginTop: '0.2em' }}
                 >
                     Zurücksetzen
                 </Button>
