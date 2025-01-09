@@ -60,5 +60,6 @@ export const fetchBooks = async (criteria: SearchCriteria) => {
         return filteredBooks;
     } catch (error) {
         console.error('Error fetching books:', error);
+        alert('Error fetching books');
     }
 };
