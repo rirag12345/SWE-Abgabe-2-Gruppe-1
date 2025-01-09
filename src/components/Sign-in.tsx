@@ -1,10 +1,15 @@
 import { Box, Button, Container, TextField, Typography } from '@mui/material';
 import axios, { AxiosError } from 'axios';
+import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { NavigateFunction, useNavigate } from 'react-router-dom';
 import { SignInSchema } from '../features/auth/lib/validators';
 
 const tokenUrl: string = import.meta.env.VITE_TOKEN_URL as string;
+
+interface SignInProps {
+    onSignIn: () => void;
+}
 
 /**
  * SignIn Komponente welche das Anmelden mit Email und Passwort erlaubt
@@ -15,7 +20,11 @@ const tokenUrl: string = import.meta.env.VITE_TOKEN_URL as string;
  *
  * @returns Die gerenderte Komponente.
  */
-export const SignIn = () => {
+export const SignIn: React.FC<SignInProps> = ({ onSignIn }) => {
+    SignIn.propTypes = {
+        onSignIn: PropTypes.func.isRequired,
+    };
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [emailError, setEmailError] = useState('');
@@ -63,6 +72,7 @@ export const SignIn = () => {
                 localStorage.setItem('JWT', result.data.access_token);
                 localStorage.setItem('refreshToken', result.data.refresh_token);
 
+                onSignIn();
                 navigate('/');
             })
             .catch((error: AxiosError) => {
