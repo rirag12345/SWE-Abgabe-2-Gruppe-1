@@ -133,6 +133,11 @@ export function Create() {
                     setTimeout(() => {
                         setErrorAlert('');
                     }, 5000);
+                } else {
+                    setErrorAlert('An error occurred!');
+                    setTimeout(() => {
+                        setErrorAlert('');
+                    }, 5000);
                 }
 
                 console.error(error);
