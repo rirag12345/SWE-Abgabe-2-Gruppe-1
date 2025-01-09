@@ -99,11 +99,18 @@ export const SearchBookButton: React.FC<SearchBookButtonProps> = ({
                     />
                 </Box>
                 <Box
-                    style={{ marginBottom: '10px' }}
-                    sx={{ justifyContent: 'center', alignItems: 'center' }}
+                    display='flex'
+                    flexDirection='column'
+                    justifyContent='center'
+                    alignItems='center'
+                    style={{ marginBottom: '10px', width: '100%' }}
                 >
                     <FormLabel component='legend'>Schlagwoerter</FormLabel>
-                    <RadioGroup row name='RadioGroup-schlagwoerter'>
+                    <RadioGroup
+                        row
+                        name='RadioGroup-schlagwoerter'
+                        style={{ justifyContent: 'center', display: 'flex' }}
+                    >
                         <FormControlLabel
                             value='Typescript'
                             control={
@@ -158,6 +165,7 @@ export const SearchBookButton: React.FC<SearchBookButtonProps> = ({
                         />
                     </RadioGroup>
                 </Box>
+
                 <FormControl
                     fullWidth
                     style={{ marginTop: '10px', marginBottom: '10px' }}
