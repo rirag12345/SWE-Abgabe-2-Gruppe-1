@@ -55,7 +55,7 @@ export const SearchResults = () => {
             {showResults && (
                 <>
                     <Typography
-                        variant="h4"
+                        variant='h4'
                         gutterBottom
                         style={{ marginTop: '20px' }}
                     >
@@ -104,8 +104,8 @@ export const SearchResults = () => {
                                         <TableCell>
                                             <a
                                                 href={book.homepage}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
+                                                target='_blank'
+                                                rel='noopener noreferrer'
                                             >
                                                 {book.homepage}
                                             </a>
