@@ -1,6 +1,7 @@
-import { Container } from '@mui/material';
+import { Box, Container, Typography } from '@mui/material';
 import { useState } from 'react';
 import {
+    Link,
     Navigate,
     Route,
     BrowserRouter as Router,
@@ -17,9 +18,7 @@ export const App = () => {
 
     return (
         <Router>
-            <div
-                style={{ backgroundColor: '#fff', height: '100vh', margin: 0 }}
-            >
+            <Box>
                 <Navbar isAuthenticated={isAuthenticated} />
 
                 <Container style={{ padding: '20px' }}>
@@ -32,10 +31,7 @@ export const App = () => {
                                 />
                             }
                         />
-                        <Route
-                            path='/'
-                            element={<div>Sie sind auf der Startseite!</div>}
-                        />
+                        <Route path='/' />
                         <Route
                             path='/search-results'
                             element={<SearchResults />}
@@ -56,7 +52,22 @@ export const App = () => {
                         />
                     </Routes>
                 </Container>
-            </div>
+                <Box
+                    component='footer'
+                    sx={{
+                        textAlign: 'center',
+                    }}
+                >
+                    <Typography variant='body2'>
+                        &copy; 2024 Philip Neuffer, Botan Coban, Felix Jaeger
+                    </Typography>
+                    <Typography variant='body2'>
+                        <Link to='./LICENSE' target='_blank' rel='noopener'>
+                            LICENSE
+                        </Link>
+                    </Typography>
+                </Box>
+            </Box>
         </Router>
     );
 };
