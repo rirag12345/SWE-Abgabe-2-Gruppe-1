@@ -69,8 +69,11 @@ export const SignIn: React.FC<SignInProps> = ({ onSignIn }) => {
                 password: password,
             })
             .then((result) => {
-                localStorage.setItem('JWT', result.data.access_token);
-                localStorage.setItem('refreshToken', result.data.refresh_token);
+                sessionStorage.setItem('JWT', result.data.access_token);
+                sessionStorage.setItem(
+                    'refreshToken',
+                    result.data.refresh_token,
+                );
 
                 onSignIn();
                 navigate('/');
