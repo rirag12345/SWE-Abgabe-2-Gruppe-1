@@ -4,5 +4,8 @@ export interface SearchCriteria {
     rating?: string;
     tsChecked?: boolean;
     jsChecked?: boolean;
-    format?: string;
+    pyChecked?: boolean;
+    jaChecked?: boolean;
+    lieferbar?: boolean;
+    art?: string;
 }

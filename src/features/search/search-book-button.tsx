@@ -7,6 +7,8 @@ import {
     FormLabel,
     MenuItem,
     Paper,
+    Radio,
+    RadioGroup,
     Select,
     TextField,
     Typography,
@@ -16,9 +18,11 @@ import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { SearchCriteriaSchema } from '../auth/lib/validators';
 import { SearchCriteria } from './types/search';
+
 interface SearchBookButtonProps {
     onSearch: (criteria: SearchCriteria) => void;
 }
+
 export const SearchBookButton: React.FC<SearchBookButtonProps> = ({
     onSearch,
 }) => {
@@ -27,7 +31,10 @@ export const SearchBookButton: React.FC<SearchBookButtonProps> = ({
     const [rating, setRating] = useState<number | null>(null);
     const [tsChecked, setTsChecked] = useState(false);
     const [jsChecked, setJsChecked] = useState(false);
-    const [format, setFormat] = useState('');
+    const [pyChecked, setPyChecked] = useState(false);
+    const [jaChecked, setJaChecked] = useState(false);
+    const [art, setArt] = useState('');
+    const [lieferbar, setLieferbar] = useState(true);
     const [errors, setErrors] = useState<string[]>([]);
 
     const handleSearch = () => {
@@ -37,7 +44,10 @@ export const SearchBookButton: React.FC<SearchBookButtonProps> = ({
             rating: rating ? rating.toString() : '',
             tsChecked,
             jsChecked,
-            format,
+            pyChecked,
+            jaChecked,
+            art,
+            lieferbar,
         };
 
         const result = SearchCriteriaSchema.safeParse(criteria);
@@ -60,7 +70,10 @@ export const SearchBookButton: React.FC<SearchBookButtonProps> = ({
         setRating(null);
         setTsChecked(false);
         setJsChecked(false);
-        setFormat('');
+        setPyChecked(false);
+        setJaChecked(false);
+        setArt('');
+        setLieferbar(false);
         setErrors([]);
     };
 
@@ -80,9 +93,7 @@ export const SearchBookButton: React.FC<SearchBookButtonProps> = ({
                     variant='outlined'
                     fullWidth
                     value={isbn}
-                    onChange={(e) => {
-                        setIsbn(e.target.value);
-                    }}
+                    onChange={(e) => setIsbn(e.target.value)}
                     style={{ marginBottom: '10px' }}
                 />
                 <TextField
@@ -90,9 +101,7 @@ export const SearchBookButton: React.FC<SearchBookButtonProps> = ({
                     variant='outlined'
                     fullWidth
                     value={title}
-                    onChange={(e) => {
-                        setTitle(e.target.value);
-                    }}
+                    onChange={(e) => setTitle(e.target.value)}
                     style={{ marginBottom: '10px' }}
                 />
                 <Box style={{ marginBottom: '10px' }}>
@@ -100,50 +109,90 @@ export const SearchBookButton: React.FC<SearchBookButtonProps> = ({
                     <Rating
                         name='search-rating'
                         value={rating}
-                        precision={0.5}
-                        onChange={(_event, newValue) => {
-                            setRating(newValue);
-                        }}
+                        precision={1}
+                        onChange={(_event, newValue) => setRating(newValue)}
                     />
                 </Box>
-                <FormControlLabel
-                    control={
-                        <Checkbox
-                            checked={tsChecked}
-                            onChange={(e) => {
-                                setTsChecked(e.target.checked);
-                            }}
+                <Box style={{ marginBottom: '10px' }}>
+                    <FormLabel component='legend'>Schlagwoerter</FormLabel>
+                    <RadioGroup row name='RadioGroup-schlagwoerter'>
+                        <FormControlLabel
+                            value='Typescript'
+                            control={
+                                <Radio
+                                    id='Radio-Typescript'
+                                    checked={tsChecked}
+                                    onChange={(e) =>
+                                        setTsChecked(e.target.checked)
+                                    }
+                                />
+                            }
+                            label='TypeScript'
                         />
-                    }
-                    label='TS'
-                />
-                <FormControlLabel
-                    control={
-                        <Checkbox
-                            checked={jsChecked}
-                            onChange={(e) => {
-                                setJsChecked(e.target.checked);
-                            }}
+                        <FormControlLabel
+                            value='JavaScript'
+                            control={
+                                <Radio
+                                    id='Radio-JavaScript'
+                                    checked={jsChecked}
+                                    onChange={(e) =>
+                                        setJsChecked(e.target.checked)
+                                    }
+                                />
+                            }
+                            label='JavaScript'
                         />
-                    }
-                    label='JS'
-                />
+                        <FormControlLabel
+                            value='Python'
+                            control={
+                                <Radio
+                                    id='Radio-Python'
+                                    checked={pyChecked}
+                                    onChange={(e) =>
+                                        setPyChecked(e.target.checked)
+                                    }
+                                />
+                            }
+                            label='Python'
+                        />
+                        <FormControlLabel
+                            value='Java'
+                            control={
+                                <Radio
+                                    id='Radio-Java'
+                                    checked={jaChecked}
+                                    onChange={(e) =>
+                                        setJaChecked(e.target.checked)
+                                    }
+                                />
+                            }
+                            label='Java'
+                        />
+                    </RadioGroup>
+                </Box>
                 <FormControl
                     fullWidth
                     style={{ marginTop: '10px', marginBottom: '10px' }}
                 >
                     <FormLabel component='legend'>Art</FormLabel>
                     <Select
-                        value={format}
-                        onChange={(e) => {
-                            setFormat(e.target.value as string);
-                        }}
+                        value={art}
+                        onChange={(e) => setArt(e.target.value as string)}
                     >
                         <MenuItem value='HARDCOVER'>Hardcover</MenuItem>
                         <MenuItem value='EPUB'>EPUB</MenuItem>
                         <MenuItem value='PAPERBACK'>Paperback</MenuItem>
                     </Select>
                 </FormControl>
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            checked={lieferbar}
+                            onChange={(e) => setLieferbar(e.target.checked)}
+                        />
+                    }
+                    label='Lieferbar'
+                />
                 {errors.length > 0 && (
                     <Box style={{ marginBottom: '10px', color: 'red' }}>
                         {errors.map((error, index) => (

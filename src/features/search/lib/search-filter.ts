@@ -37,9 +37,24 @@ export const fetchBooks = async (criteria: SearchCriteria) => {
                 book.schlagwoerter?.includes('JAVASCRIPT'),
             );
         }
-        if (criteria.format) {
+        if (criteria.pyChecked) {
+            filteredBooks = filteredBooks.filter((book) =>
+                book.schlagwoerter?.includes('PYTHON'),
+            );
+        }
+        if (criteria.jaChecked) {
+            filteredBooks = filteredBooks.filter((book) =>
+                book.schlagwoerter?.includes('JAVA'),
+            );
+        }
+        if (criteria.art) {
             filteredBooks = filteredBooks.filter(
-                (book) => book.art === criteria.format,
+                (book) => book.art === criteria.art,
+            );
+        }
+        if (criteria.lieferbar !== undefined) {
+            filteredBooks = filteredBooks.filter(
+                (book) => book.lieferbar === criteria.lieferbar,
             );
         }
         return filteredBooks;
